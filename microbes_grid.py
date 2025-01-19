@@ -24,14 +24,14 @@ class MicrobesGrid:
 
     def get_labels_and_cells(self):
         label_font = ("Arial", 18)
-        entry_font = ("Arial", 16)
+        entry_font = ("Arial", 20)
 
         # Add column property labels
         for col_index, col_prop in enumerate(self.col_props):
             label = tk.Label(
                 self.frame,
                 text=col_prop,
-                width=20,
+                width=16,
                 height=3,
                 bg="lightblue",
                 font=label_font,
@@ -46,7 +46,7 @@ class MicrobesGrid:
             label = tk.Label(
                 self.frame,
                 text=row_prop,
-                width=20,
+                width=16,
                 height=3,
                 bg="lightgreen",
                 font=label_font,
@@ -59,7 +59,7 @@ class MicrobesGrid:
             for col_index in range(len(self.col_props)):
                 entry = tk.Entry(
                     self.frame,
-                    width=20,
+                    width=14,
                     justify="center",
                     font=entry_font,
                     bg="#f0f0f0",
