@@ -1,8 +1,6 @@
 import tkinter as tk
 import pandas as pd
 
-WHITE = (255, 255, 255)
-
 
 class MicrobesGrid:
     def __init__(self, data_source):
@@ -13,37 +11,52 @@ class MicrobesGrid:
         self.row_props = ["Rod", "Coccus", "Spiral"]
         self.col_props = ["Gram Positive", "Gram Negative", "Acid Fast"]
 
-        self.create_root()
+        self.create_root_and_frame()
         self.get_labels_and_cells()
 
-    def create_root(self):
+    def create_root_and_frame(self):
         self.root = tk.Tk()
         self.root.geometry(f"{self.width}x{self.height}")
         self.root.title("Microbes Grid")
 
         self.frame = tk.Frame(self.root)
-        self.frame.pack(padx=20, pady=20)
+        self.frame.pack(padx=40, pady=40)
 
     def get_labels_and_cells(self):
+        label_font = ("Arial", 16)
+        entry_font = ("Arial", 14)
+
         # Add column property labels
         for col_index, col_prop in enumerate(self.col_props):
             label = tk.Label(
-                self.frame, text=col_prop, width=15, height=2, bg="lightblue"
+                self.frame,
+                text=col_prop,
+                width=20,
+                height=3,
+                bg="lightblue",
+                font=label_font,
             )
-            label.grid(row=0, column=col_index + 1, padx=5, pady=5)
+            label.grid(row=0, column=col_index + 1, padx=10, pady=10)
 
         # Add row property labels and the clickable grid
         for row_index, row_prop in enumerate(self.row_props):
             # Row property label
             label = tk.Label(
-                self.frame, text=row_prop, width=15, height=2, bg="lightgreen"
+                self.frame,
+                text=row_prop,
+                width=20,
+                height=3,
+                bg="lightgreen",
+                font=label_font,
             )
-            label.grid(row=row_index + 1, column=0, padx=5, pady=5)
+            label.grid(row=row_index + 1, column=0, padx=10, pady=10)
 
             # Grid cells
             for col_index in range(len(self.col_props)):
-                entry = tk.Entry(self.frame, width=15, justify="center")
-                entry.grid(row=row_index + 1, column=col_index + 1, padx=5, pady=5)
+                entry = tk.Entry(
+                    self.frame, width=20, justify="center", font=entry_font
+                )
+                entry.grid(row=row_index + 1, column=col_index + 1, padx=10, pady=10)
 
     def main_loop(self):
         if self.running:
