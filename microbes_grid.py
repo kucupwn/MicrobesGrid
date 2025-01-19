@@ -20,11 +20,11 @@ class MicrobesGrid:
         self.root.title("Microbes Grid")
 
         self.frame = tk.Frame(self.root)
-        self.frame.pack(padx=40, pady=40)
+        self.frame.pack(padx=40, pady=100)
 
     def get_labels_and_cells(self):
-        label_font = ("Arial", 16)
-        entry_font = ("Arial", 14)
+        label_font = ("Arial", 18)
+        entry_font = ("Arial", 16)
 
         # Add column property labels
         for col_index, col_prop in enumerate(self.col_props):
@@ -35,6 +35,8 @@ class MicrobesGrid:
                 height=3,
                 bg="lightblue",
                 font=label_font,
+                relief="ridge",
+                bd=3,
             )
             label.grid(row=0, column=col_index + 1, padx=10, pady=10)
 
@@ -48,13 +50,21 @@ class MicrobesGrid:
                 height=3,
                 bg="lightgreen",
                 font=label_font,
+                relief="ridge",
+                bd=3,
             )
             label.grid(row=row_index + 1, column=0, padx=10, pady=10)
 
             # Grid cells
             for col_index in range(len(self.col_props)):
                 entry = tk.Entry(
-                    self.frame, width=20, justify="center", font=entry_font
+                    self.frame,
+                    width=20,
+                    justify="center",
+                    font=entry_font,
+                    bg="#f0f0f0",
+                    relief="groove",
+                    bd=2,
                 )
                 entry.grid(row=row_index + 1, column=col_index + 1, padx=10, pady=10)
 
