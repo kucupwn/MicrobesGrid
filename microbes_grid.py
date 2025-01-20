@@ -10,9 +10,10 @@ class MicrobesGrid:
         self.running = True
         self.row_props = ["Rod", "Coccus", "Spiral"]
         self.col_props = ["Gram Positive", "Gram Negative", "Acid Fast"]
+        self.game_fields = []
 
         self.create_root_and_frame()
-        self.get_labels_and_cells()
+        self.get_labels_cells_and_game_cells()
 
     def create_root_and_frame(self):
         self.root = tk.Tk()
@@ -22,9 +23,12 @@ class MicrobesGrid:
         self.frame = tk.Frame(self.root)
         self.frame.pack(padx=40, pady=100)
 
-    def get_labels_and_cells(self):
+    def change_button_text(self, button):
+        button.config(text="Changed")
+
+    def get_labels_cells_and_game_cells(self):
         label_font = ("Arial", 18)
-        entry_font = ("Arial", 20)
+        button_font = ("Arial", 20)
 
         # Add column property labels
         for col_index, col_prop in enumerate(self.col_props):
@@ -57,16 +61,22 @@ class MicrobesGrid:
 
             # Grid cells
             for col_index in range(len(self.col_props)):
-                entry = tk.Entry(
+                button = tk.Button(
                     self.frame,
+                    text="???",
                     width=14,
                     justify="center",
-                    font=entry_font,
-                    bg="#f0f0f0",
+                    font=button_font,
+                    bg="lightgray",
                     relief="groove",
                     bd=2,
+                    pady=20,
+                    command=lambda b=col_index + (
+                        row_index * 3
+                    ): self.change_button_text(self.game_fields[b]),
                 )
-                entry.grid(row=row_index + 1, column=col_index + 1, padx=10, pady=10)
+                button.grid(row=row_index + 1, column=col_index + 1, padx=10, pady=10)
+                self.game_fields.append(button)
 
     def main_loop(self):
         if self.running:
