@@ -23,7 +23,7 @@ class GameDataset:
     def get_species_name_list(self, df):
         return df.apply(lambda row: f'{row['Genus']} {row['Species']}', axis=1).tolist()
         
-    def get_props(self):
+    def get_properties(self):
         gram_positive_df = self.df[self.df['Gram Stain'] == 'Positive']
         gram_positive_list = self.get_species_name_list(gram_positive_df)
         gram_positive = {'Gram positive species': gram_positive_list}
