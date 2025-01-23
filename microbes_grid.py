@@ -9,12 +9,12 @@ class MicrobesGrid:
         self.width = 1280
         self.height = 760
         self.running = True
-        self.col_props = ["Gram Positive", "Gram Negative", "Acid Fast"]
-        self.row_props = ["Rod", "Coccus", "Spiral"]
+        self.cols = ["Gram Positive", "Gram Negative", "Acid Fast"]
+        self.rows = ["Rod", "Coccus", "Spiral"]
         self.game_fields = []
         self.dataset = GameDataset(dataset)
         self.interface = GameInterface(
-            self.width, self.height, self.col_props, self.row_props, self.game_fields
+            self.width, self.height, self.cols, self.rows, self.game_fields
         )
 
     def main_loop(self):

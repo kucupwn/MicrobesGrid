@@ -2,11 +2,11 @@ import tkinter as tk
 
 
 class GameInterface:
-    def __init__(self, width, height, col, row, game_fields):
+    def __init__(self, width, height, cols, rows, game_fields):
         self.width = width
         self.height = height
-        self.col_props = col
-        self.row_props = row
+        self.col_props = cols
+        self.row_props = rows
         self.game_fields = game_fields
         self.create_ui()
 
