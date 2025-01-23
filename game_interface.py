@@ -8,9 +8,7 @@ class GameInterface:
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
-        self.create_ui()
 
-    def create_ui(self):
         self.create_root_and_frame()
         self.get_labels_cells_and_game_cells()
 

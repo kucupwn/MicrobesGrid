@@ -1,5 +1,3 @@
-import tkinter as tk
-import pandas as pd
 from game_interface import GameInterface
 from game_dataset import GameDataset
 
