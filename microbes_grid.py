@@ -4,15 +4,16 @@ from game_dataset import GameDataset
 
 
 class MicrobesGrid:
-    def __init__(self, dataset):
+    def __init__(self):
         self.width = 1280
         self.height = 760
         self.running = True
-        self.cols = ["Gram Positive", "Gram Negative", "Acid Fast"]
-        self.rows = ["Rod", "Coccus", "Spiral"]
+        self.cols = []
+        self.rows = []
         self.game_fields = []
 
         self.init_dataset()
+        self.get_random_rows_and_cols()
 
         self.interface = GameInterface(
             self.width, self.height, self.cols, self.rows, self.game_fields
@@ -20,35 +21,36 @@ class MicrobesGrid:
 
     def init_dataset(self):
         self.dataset = GameDataset("microbes.xlsx")
-        self.dataset.get_species_name_list()
+        self.dataset.get_all_species()
         self.dataset.get_properties()
 
     def get_random_rows_and_cols(self):
         while True:
             cols = random.sample(self.dataset.properties, 3)
-            cols_keys = [list(cols.keys())[0] for col in cols]
+            cols_desc = [prop[0] for prop in cols]
             rows = []
 
             shuffled_properties = self.dataset.properties[:]
             random.shuffle(shuffled_properties)
 
             for prop in self.dataset.properties:
-                key, value_list = list(prop.items())[0]
-
                 if len(rows) == 3:
                     self.rows = rows
                     self.cols = cols
                     return
 
-                if key in cols_keys:
+                desc = prop[0]
+                name_list = prop[1]
+
+                if desc in cols_desc:
                     continue
 
-                common_1 = list(set(value_list) & set(cols[0].values())[0])
-                common_2 = list(set(value_list) & set(cols[1].values())[0])
-                common_3 = list(set(value_list) & set(cols[2].values())[0])
+                common_1 = list(set(name_list) & set(cols[0][1]))
+                common_2 = list(set(name_list) & set(cols[1][1]))
+                common_3 = list(set(name_list) & set(cols[2][1]))
 
-                if len(common_1) > 4 and len(common_2) > 4 and len(common_3) > 4:
-                    rows.append({key: value_list})
+                if len(common_1) > 2 and len(common_2) > 2 and len(common_3) > 2:
+                    rows.append(prop)
 
     def main_loop(self):
         if self.running:

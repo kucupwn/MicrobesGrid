@@ -31,7 +31,7 @@ class GameInterface:
         for col_index, col_prop in enumerate(self.col_props):
             label = tk.Label(
                 self.frame,
-                text=col_prop,
+                text=col_prop[0],
                 width=16,
                 height=4,
                 bg="lightblue",
@@ -46,7 +46,7 @@ class GameInterface:
             # Row property label
             label = tk.Label(
                 self.frame,
-                text=row_prop,
+                text=row_prop[0],
                 width=16,
                 height=4,
                 bg="lightgreen",
