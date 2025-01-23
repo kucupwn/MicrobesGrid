@@ -50,6 +50,26 @@ class GameDataset:
         other_shape = ("Other shape \nspecies", other_shape_list)
         self.properties.append(other_shape)
 
+        aerobe_df = self.df[self.df["Metabolism"] == "Aerobe"]
+        aerobe_list = self.get_species_name_list(aerobe_df)
+        aerobe = ("Metabolism: \naerobe", aerobe_list)
+        self.properties.append(aerobe)
+
+        anaerobe_df = self.df[self.df["Metabolism"] == "Anaerobe"]
+        anaerobe_list = self.get_species_name_list(anaerobe_df)
+        anaerobe = ("Metabolism: \nanaerobe", anaerobe_list)
+        self.properties.append(anaerobe)
+
+        fac_anaerobe_df = self.df[self.df["Metabolism"] == "Facultative Anaerobe"]
+        fac_anaerobe_list = self.get_species_name_list(fac_anaerobe_df)
+        fac_anaerobe = ("Metabolism: \nfacultative anaerobe", fac_anaerobe_list)
+        self.properties.append(fac_anaerobe)
+
+        microaerophilic_df = self.df[self.df["Metabolism"] == "Microaerophilic"]
+        microaerophilic_list = self.get_species_name_list(microaerophilic_df)
+        microaerophilic = ("Metabolism: \nmicroaerophilic", microaerophilic_list)
+        self.properties.append(microaerophilic)
+
         less_than_40_gc_content_df = self.df[self.df["GC Content"] < 40]
         less_than_40_gc_content_list = self.get_species_name_list(
             less_than_40_gc_content_df
