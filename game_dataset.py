@@ -18,10 +18,14 @@ class GameDataset:
         self.properties = []
 
     def get_all_species(self):
-        all_sp = self.df.apply(lambda row: f"{row['Genus']} {row['Species']}", axis=1)
-        self.all_species = list(all_sp)
+        # Get all species for search list
+        all_sp = self.df.apply(
+            lambda row: f"{row['Genus']} {row['Species']}", axis=1
+        ).tolist()
+        self.all_species = all_sp
 
     def get_species_name_list(self, df):
+        # Automate name extract to list
         return df.apply(lambda row: f"{row['Genus']} {row['Species']}", axis=1).tolist()
 
     def get_properties(self):

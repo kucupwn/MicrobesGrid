@@ -24,6 +24,8 @@ class GameInterface:
         button.config(text="Changed")
 
     def get_labels_cells_and_game_cells(self):
+        # Set up gamefield
+
         label_font = ("Arial", 18)
         button_font = ("Arial", 20)
 

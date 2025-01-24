@@ -26,29 +26,35 @@ class MicrobesGrid:
 
     def get_random_rows_and_cols(self):
         while True:
+            # Initiate 3 random columns
             cols = random.sample(self.dataset.properties, 3)
             cols_desc = [prop[0] for prop in cols]
             rows = []
 
+            # Shuffle properties order
             shuffled_properties = self.dataset.properties[:]
             random.shuffle(shuffled_properties)
 
             for prop in self.dataset.properties:
+                # Return when all cols and rows got matched
                 if len(rows) == 3:
                     self.rows = rows
                     self.cols = cols
                     return
 
+                # Unpack tuple
                 desc = prop[0]
                 name_list = prop[1]
 
                 if desc in cols_desc:
                     continue
 
+                # Check common values between cols and current row
                 common_1 = list(set(name_list) & set(cols[0][1]))
                 common_2 = list(set(name_list) & set(cols[1][1]))
                 common_3 = list(set(name_list) & set(cols[2][1]))
 
+                # Check if there are at least 3 match in all 3 intersection
                 if len(common_1) > 2 and len(common_2) > 2 and len(common_3) > 2:
                     rows.append(prop)
 
