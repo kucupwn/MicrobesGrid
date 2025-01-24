@@ -22,7 +22,8 @@ class MicrobesGrid:
     def init_dataset(self):
         self.dataset = GameDataset("microbes.xlsx")
         self.dataset.get_all_species()
-        self.dataset.get_properties()
+        # self.dataset.get_properties()
+        self.dataset.get_properties_exp()
 
     def get_random_rows_and_cols(self):
         while True:

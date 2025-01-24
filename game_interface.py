@@ -45,7 +45,6 @@ class GameInterface:
 
         # Add row property labels and the clickable grid
         for row_index, row_prop in enumerate(self.row_props):
-            # Row property label
             label = tk.Label(
                 self.frame,
                 text=row_prop[0],
