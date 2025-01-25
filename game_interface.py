@@ -8,6 +8,8 @@ class GameInterface:
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
+        self.label_font = ("Arial", 18)
+        self.button_font = ("Arial", 20)
 
         self.create_root_and_frame()
         self.get_labels_cells_and_game_cells()
@@ -23,11 +25,26 @@ class GameInterface:
     def change_button_text(self, button):
         button.config(text="Changed")
 
+    def restart_game(self):
+        pass
+
     def get_labels_cells_and_game_cells(self):
         # Set up gamefield
 
-        label_font = ("Arial", 18)
-        button_font = ("Arial", 20)
+        # Add restart button
+        restart_button = tk.Button(
+            self.frame,
+            text="Restart",
+            width=10,
+            justify="center",
+            font=self.button_font,
+            bg="red",
+            fg="white",
+            relief="groove",
+            bd=2,
+            command=self.restart_game,
+        )
+        restart_button.grid(row=0, column=0, padx=10, pady=10)
 
         # Add column property labels
         for col_index, col_prop in enumerate(self.col_props):
@@ -37,7 +54,7 @@ class GameInterface:
                 width=16,
                 height=4,
                 bg="lightblue",
-                font=label_font,
+                font=self.label_font,
                 relief="ridge",
                 bd=3,
             )
@@ -51,7 +68,7 @@ class GameInterface:
                 width=16,
                 height=4,
                 bg="lightgreen",
-                font=label_font,
+                font=self.label_font,
                 relief="ridge",
                 bd=3,
             )
@@ -65,7 +82,7 @@ class GameInterface:
                     width=14,
                     height=2,
                     justify="center",
-                    font=button_font,
+                    font=self.button_font,
                     bg="lightgray",
                     relief="groove",
                     bd=2,
