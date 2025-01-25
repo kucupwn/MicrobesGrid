@@ -1,5 +1,6 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
+from tkinter import ttk
 
 UNKNOWN = "???"
 
@@ -15,6 +16,7 @@ class GameInterface:
         intersections,
         all_species,
         restart_callback,
+        df,
     ):
         self.width = width
         self.height = height
@@ -24,6 +26,7 @@ class GameInterface:
         self.intersections = intersections
         self.all_species = all_species
         self.restart_callback = restart_callback
+        self.df = df
         self.label_font = ("Arial", 18)
         self.button_font = ("Arial", 14, "italic")
 
@@ -41,15 +44,16 @@ class GameInterface:
     def create_combobox(self):
         # Create a new top-level window for the Combobox
         combobox_window = tk.Toplevel(self.root)
-        combobox_window.geometry(
-            "300x100+%d+%d"
-            % (
-                self.root.winfo_x() + self.root.winfo_width() // 2 - 150,
-                self.root.winfo_y() + self.root.winfo_height() // 2 - 50,
-            )
-        )  # Center on the screen
         combobox_window.title("Select Species")
-        combobox_window.grab_set()
+
+        combobox_width = 300
+        combobox_height = 60
+        position_left, position_top = self.window_placement_middle(
+            combobox_window, combobox_width, combobox_height
+        )
+        combobox_window.geometry(
+            f"{combobox_width}x{combobox_height}+{position_left}+{position_top}"
+        )
 
         # Create the Combobox
         combobox = AutocompleteCombobox(
@@ -59,18 +63,28 @@ class GameInterface:
 
         return {"window": combobox_window, "combobox": combobox}
 
+    def window_placement_middle(self, window, width, height):
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+        position_top = int(screen_height / 2 - height / 2)
+        position_left = int(screen_width / 2 - width / 2)
+
+        return (position_left, position_top)
+
     def info_centre_combobox_events(self):
         combobox = self.create_combobox()
 
         def on_select(event):
             selected_value = combobox["combobox"].get()
-            self.display_species_info()
+            self.display_species_info(selected_value)
+            combobox["window"].grab_release()  # Release the lock
             combobox["window"].destroy()  # Close the Toplevel window
 
         def on_enter(event):
             selected_value = combobox["combobox"].get()
             if selected_value:
-                self.display_species_info()
+                self.display_species_info(selected_value)
+                combobox["window"].grab_release()
                 combobox["window"].destroy()
 
         combobox["combobox"].bind("<<ComboboxSelected>>", on_select)
@@ -78,8 +92,41 @@ class GameInterface:
 
         combobox["combobox"].focus()
 
-    def display_species_info(self):
-        pass
+    def display_species_info(self, name):
+        # Split name into Genus and Species
+        name_cols = name.split(" ")
+
+        # Filter the DataFrame based on Genus and Species
+        name_row = self.df[
+            (self.df["Genus"] == name_cols[0]) & (self.df["Species"] == name_cols[1])
+        ]
+
+        # Create a new top-level window for the table view
+        info_window = tk.Toplevel(self.root)
+        info_window.title(f"Details for {name}")
+
+        # Center the Toplevel window on the screen
+        window_width = 350
+        window_height = 680
+        position_left, position_top = self.window_placement_middle(
+            info_window, window_width, window_height
+        )
+        info_window.geometry(
+            f"{window_width}x{window_height}+{position_left}+{position_top}"
+        )
+
+        # Add key-value pairs in the format "Column Name: Value"
+        for col in self.df.columns:
+            value = name_row.iloc[0][col]  # Get the value for the current column
+            tk.Label(
+                info_window,
+                text=f"{col}: {value}",
+                font=("Arial", 12),
+                anchor="w",
+                justify="left",
+                padx=10,
+                pady=5,
+            ).pack(anchor="w")
 
     def input_combobox_events(self, button):
         combobox = self.create_combobox()

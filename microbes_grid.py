@@ -25,6 +25,7 @@ class MicrobesGrid:
             self.intersections,
             self.dataset.all_species,
             self.restart_game,
+            self.dataset.df,
         )
         self.game_fields = self.interface.game_fields
 
@@ -75,9 +76,6 @@ class MicrobesGrid:
         self.game_fields = []
         self.get_random_rows_and_cols()
         self.interface.reset_ui(self.cols, self.rows, self.game_fields)
-
-    def open_search(self):
-        pass
 
     def main_loop(self):
         if self.running:
