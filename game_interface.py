@@ -129,6 +129,9 @@ class GameInterface:
             ).pack(anchor="w")
 
     def input_combobox_events(self, button):
+        if button.cget("text") != UNKNOWN:
+            return
+
         combobox = self.create_combobox()
 
         def on_select(event):
