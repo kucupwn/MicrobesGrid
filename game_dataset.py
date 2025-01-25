@@ -51,6 +51,10 @@ class GameDataset:
                 self.get_gc_content_property()
                 continue
 
+            if col == "Pigment Production":
+                self.get_pigment_property()
+                continue
+
             for _, prop in col_values.iterrows():
                 if prop["size"] > 2:
                     prop_result = self.create_property_tuple(col, prop)
@@ -99,3 +103,14 @@ class GameDataset:
         )
         more_than_60_gc_content = ("GC content\n> 60%", more_than_60_gc_content_list)
         self.properties.append(more_than_60_gc_content)
+
+    def get_pigment_property(self):
+        not_pigmented_df = self.df[self.df["Pigment Production"] == "No"]
+        not_pigmented_list = self.get_species_name_list(not_pigmented_df)
+        not_pigmented = ("Pigment Production:\nNo", not_pigmented_list)
+        self.properties.append(not_pigmented)
+
+        pigmented_df = self.df[self.df["Pigment Production"] != "No"]
+        pigmented_list = self.get_species_name_list(pigmented_df)
+        pigmented = ("Pigment Production:\nYes", pigmented_list)
+        self.properties.append(pigmented)

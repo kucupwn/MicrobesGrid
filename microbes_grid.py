@@ -45,14 +45,15 @@ class MicrobesGrid:
                 # Unpack tuple
                 desc = prop[0]
                 name_list = prop[1]
+                name_list_set = set(name_list)
 
                 if desc in cols_desc:
                     continue
 
                 # Check common values between cols and current row
-                common_1 = list(set(name_list) & set(cols[0][1]))
-                common_2 = list(set(name_list) & set(cols[1][1]))
-                common_3 = list(set(name_list) & set(cols[2][1]))
+                common_1 = list(name_list_set & set(cols[0][1]))
+                common_2 = list(name_list_set & set(cols[1][1]))
+                common_3 = list(name_list_set & set(cols[2][1]))
 
                 # Check if there are at least 3 match in all 3 intersection
                 if len(common_1) > 2 and len(common_2) > 2 and len(common_3) > 2:
