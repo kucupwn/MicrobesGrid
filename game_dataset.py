@@ -44,7 +44,7 @@ class GameDataset:
             col_values = self.df.groupby(col, as_index=False).size()
 
             if col == "Shape":
-                self.get_shape_property(col, col_values)
+                self.get_shape_property()
                 continue
 
             if col == "GC Content":
@@ -60,22 +60,21 @@ class GameDataset:
                     prop_result = self.create_property_tuple(col, prop)
                     self.properties.append(prop_result)
 
-    def get_shape_property(self, col, values):
-        for _, prop in values.iterrows():
-            if prop["size"] > 2:
-                if prop[0] == "Rod":
-                    prop_result = self.create_property_tuple(col, prop)
-                    self.properties.append(prop_result)
-                elif prop[0] in SPHERE_SHAPE:
-                    prop_df = self.df[self.df[col].isin(SPHERE_SHAPE)]
-                    prop_list = self.get_species_name_list(prop_df)
-                    prop_result = (f"{col}:\nSphere", prop_list)
-                    self.properties.append(prop_result)
-                elif prop[0] in OTHER_SHAPE:
-                    prop_df = self.df[self.df[col].isin(OTHER_SHAPE)]
-                    prop_list = self.get_species_name_list(prop_df)
-                    prop_result = (f"{col}:\nNOT Rod or Sphere", prop_list)
-                    self.properties.append(prop_result)
+    def get_shape_property(self):
+        rod_shape_df = self.df[self.df["Shape"] == "Rod"]
+        rod_shape_list = self.get_species_name_list(rod_shape_df)
+        rod_shape = ("Shape:\nRod", rod_shape_list)
+        self.properties.append(rod_shape)
+
+        sphere_shape_df = self.df[self.df["Shape"].isin(SPHERE_SHAPE)]
+        sphere_shape_list = self.get_species_name_list(sphere_shape_df)
+        sphere_shape = ("Shape:\nSphere", sphere_shape_list)
+        self.properties.append(sphere_shape)
+
+        other_shape_df = self.df[self.df["Shape"].isin(OTHER_SHAPE)]
+        other_shape_list = self.get_species_name_list(other_shape_df)
+        other_shape = ("Shape:\nNOT Rod or Sphere", other_shape_list)
+        self.properties.append(other_shape)
 
     def get_gc_content_property(self):
         less_than_40_gc_content_df = self.df[self.df["GC Content"] < 40]
