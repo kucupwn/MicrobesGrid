@@ -11,6 +11,7 @@ class MicrobesGrid:
         self.cols = []
         self.rows = []
         self.game_fields = []
+        self.intersections = []
 
         self.init_dataset()
         self.get_random_rows_and_cols()
@@ -21,6 +22,7 @@ class MicrobesGrid:
             self.cols,
             self.rows,
             self.game_fields,
+            self.intersections,
             self.dataset.all_species,
             self.restart_game,
         )
@@ -65,6 +67,7 @@ class MicrobesGrid:
                 # Check if there are at least 3 match in all 3 intersection
                 if len(common_1) > 2 and len(common_2) > 2 and len(common_3) > 2:
                     rows.append(prop)
+                    self.intersections.append([common_1, common_2, common_3])
 
     def restart_game(self):
         self.cols = []

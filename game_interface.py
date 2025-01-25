@@ -4,13 +4,22 @@ from ttkwidgets.autocomplete import AutocompleteCombobox
 
 class GameInterface:
     def __init__(
-        self, width, height, cols, rows, game_fields, all_species, restart_callback
+        self,
+        width,
+        height,
+        cols,
+        rows,
+        game_fields,
+        intersections,
+        all_species,
+        restart_callback,
     ):
         self.width = width
         self.height = height
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
+        self.intersections = intersections
         self.all_species = all_species
         self.restart_callback = restart_callback
         self.label_font = ("Arial", 18)
@@ -48,10 +57,25 @@ class GameInterface:
 
         def on_select(event):
             selected_value = combobox.get()
-            button.config(text=selected_value)  # Update the button text
+            self.check_user_input(selected_value, button)  # Update the button text
             combobox_window.destroy()  # Close the Toplevel window
 
         combobox.bind("<<ComboboxSelected>>", on_select)
+
+    def check_user_input(self, selected_value, button):
+        # Calculate the button's row and column index
+        button_index = self.game_fields.index(button)
+        row_index = button_index // len(self.col_props)
+        col_index = button_index % len(self.col_props)
+
+        # Get the intersection related to this row and column combination
+        intersection = self.intersections[row_index][col_index]
+
+        # Check if the selected value exists in the intersection for this position
+        if selected_value in intersection:
+            button.config(text=selected_value)
+        else:
+            button.config(text="???")
 
     def reset_ui(self, cols, rows, game_fields):
         for widget in self.frame.winfo_children():
