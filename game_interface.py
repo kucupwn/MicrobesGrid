@@ -14,7 +14,6 @@ class GameInterface:
         game_fields,
         intersections,
         all_species,
-        restart_callback,
     ):
         self.width = width
         self.height = height
@@ -23,7 +22,6 @@ class GameInterface:
         self.game_fields = game_fields
         self.intersections = intersections
         self.all_species = all_species
-        self.restart_callback = restart_callback
         self.label_font = ("Arial", 18)
         self.button_font = ("Arial", 14, "italic")
 
@@ -38,18 +36,7 @@ class GameInterface:
         self.frame = tk.Frame(self.root)
         self.frame.pack(padx=40, pady=40)
 
-    def on_button_click(self, button):
-        button_text = button.cget("text")
-
-        if button_text == UNKNOWN:
-            self.show_combobox(button)
-        else:
-            self.open_info_panel(self)
-
-    def open_info_panel(self):
-        pass
-
-    def show_combobox(self, button):
+    def create_combobox(self):
         # Create a new top-level window for the Combobox
         combobox_window = tk.Toplevel(self.root)
         combobox_window.geometry(
@@ -68,21 +55,26 @@ class GameInterface:
         )
         combobox.pack(padx=10, pady=10, fill=tk.X)
 
+        return {"window": combobox_window, "combobox": combobox}
+
+    def input_combobox_events(self, button=None):
+        combobox = self.create_combobox()
+
         def on_select(event):
-            selected_value = combobox.get()
+            selected_value = combobox["combobox"].get()
             self.check_user_input(selected_value, button)  # Update the button text
-            combobox_window.destroy()  # Close the Toplevel window
+            combobox["window"].destroy()  # Close the Toplevel window
 
         def on_enter(event):
-            selected_value = combobox.get()
+            selected_value = combobox["combobox"].get()
             if selected_value:
                 self.check_user_input(selected_value, button)
-                combobox_window.destroy()
+                combobox["window"].destroy()
 
-        combobox.bind("<<ComboboxSelected>>", on_select)
-        combobox.bind("<Return>", on_enter)
+        combobox["combobox"].bind("<<ComboboxSelected>>", on_select)
+        combobox["combobox"].bind("<Return>", on_enter)
 
-        combobox.focus()
+        combobox["combobox"].focus()
 
     def check_user_input(self, selected_value, button):
         # Calculate the button's row and column index
@@ -127,7 +119,6 @@ class GameInterface:
             fg="white",
             relief="groove",
             bd=2,
-            command=self.restart_callback,
         )
         restart_button.grid(row=0, column=0, padx=10, pady=10)
 
@@ -172,9 +163,21 @@ class GameInterface:
                     relief="groove",
                     bd=2,
                     pady=20,
-                    command=lambda b=col_index + (row_index * 3): self.show_combobox(
-                        self.game_fields[b]
-                    ),
+                    command=lambda b=col_index + (
+                        row_index * 3
+                    ): self.input_combobox_events(self.game_fields[b]),
                 )
                 button.grid(row=row_index + 1, column=col_index + 1, padx=10, pady=10)
                 self.game_fields.append(button)
+
+        info_button = tk.Button(
+            self.frame,
+            text="Info centre",
+            width=10,
+            justify="center",
+            font=self.label_font,
+            bg="lightgray",
+            relief="groove",
+            bd=2,
+        )
+        info_button.grid(row=4, column=0, padx=10, pady=10)
