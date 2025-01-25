@@ -23,6 +23,7 @@ class GameDataset:
         all_sp = self.df.apply(
             lambda row: f"{row['Genus']} {row['Species']}", axis=1
         ).tolist()
+        all_sp.sort()
         self.all_species = all_sp
 
     def get_species_name_list(self, df):
