@@ -158,7 +158,8 @@ class GameInterface:
 
         # Check if the selected value exists in the intersection for this position
         if selected_value in intersection:
-            button.config(text=selected_value)
+            line_break_name = selected_value.replace(" ", "\n")
+            button.config(text=line_break_name)
         else:
             button.config(text=UNKNOWN)
             button.config(bg="red")
