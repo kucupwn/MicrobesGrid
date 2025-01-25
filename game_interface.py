@@ -2,12 +2,13 @@ import tkinter as tk
 
 
 class GameInterface:
-    def __init__(self, width, height, cols, rows, game_fields):
+    def __init__(self, width, height, cols, rows, game_fields, restart_callback):
         self.width = width
         self.height = height
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
+        self.restart_callback = restart_callback
         self.label_font = ("Arial", 18)
         self.button_font = ("Arial", 20)
 
@@ -25,8 +26,14 @@ class GameInterface:
     def change_button_text(self, button):
         button.config(text="Changed")
 
-    def restart_game(self):
-        pass
+    def reset_ui(self, cols, rows, game_fields):
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+
+        self.col_props = cols
+        self.row_props = rows
+        self.game_fields = game_fields
+        self.get_labels_cells_and_game_cells()
 
     def get_labels_cells_and_game_cells(self):
         # Set up gamefield
@@ -42,7 +49,7 @@ class GameInterface:
             fg="white",
             relief="groove",
             bd=2,
-            command=self.restart_game,
+            command=self.restart_callback,
         )
         restart_button.grid(row=0, column=0, padx=10, pady=10)
 
