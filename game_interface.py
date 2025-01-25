@@ -82,6 +82,8 @@ class GameInterface:
         combobox.bind("<<ComboboxSelected>>", on_select)
         combobox.bind("<Return>", on_enter)
 
+        combobox.focus()
+
     def check_user_input(self, selected_value, button):
         # Calculate the button's row and column index
         button_index = self.game_fields.index(button)
