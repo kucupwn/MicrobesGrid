@@ -29,9 +29,22 @@ class GameDataset:
         # Automate name extract to list
         return df.apply(lambda row: f"{row['Genus']} {row['Species']}", axis=1).tolist()
 
-    def get_properties_exp(self):
+    def get_properties(self):
         for col in self.columns:
+            if col == "Domain" or col == "Genus" or col == "Species":
+                continue
+
+            if col == "Shape":
+                pass
+
+            if col == "GC Content":
+                pass
+
+            if col == "Biosafety Level":
+                pass
+
             col_values = self.df.groupby(col, as_index=False).size()
+
             for _, prop in col_values.iterrows():
                 if prop["size"] > 2:
                     prop_df = self.df[self.df[col] == prop[0]]
