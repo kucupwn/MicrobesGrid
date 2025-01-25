@@ -76,6 +76,11 @@ class GameInterface:
             button.config(text=selected_value)
         else:
             button.config(text="???")
+            button.config(bg="red")
+            self.reset_button_bg_delayed(button)
+
+    def reset_button_bg_delayed(self, button):
+        button.after(1000, lambda: button.config(bg="lightgray"))
 
     def reset_ui(self, cols, rows, game_fields):
         for widget in self.frame.winfo_children():
