@@ -65,6 +65,9 @@ class MicrobesGrid:
                     rows.append(prop)
 
     def restart_game(self):
+        self.cols = []
+        self.rows = []
+        self.game_fields = []
         self.get_random_rows_and_cols()
         self.interface.reset_ui(self.cols, self.rows, self.game_fields)
 
