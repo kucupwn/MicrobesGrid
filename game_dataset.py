@@ -45,9 +45,11 @@ class GameDataset:
 
             if col == "Shape":
                 self.get_shape_property(col, col_values)
+                continue
 
             if col == "GC Content":
-                self.get_gc_content_property(col, col_values)
+                self.get_gc_content_property()
+                continue
 
             for _, prop in col_values.iterrows():
                 if prop["size"] > 2:
@@ -72,4 +74,28 @@ class GameDataset:
                     self.properties.append(prop_result)
 
     def get_gc_content_property(self):
-        pass
+        less_than_40_gc_content_df = self.df[self.df["GC Content"] < 40]
+        less_than_40_gc_content_list = self.get_species_name_list(
+            less_than_40_gc_content_df
+        )
+        less_than_40_gc_content = ("GC content\n< 40%", less_than_40_gc_content_list)
+        self.properties.append(less_than_40_gc_content)
+
+        between_40_60_gc_content_df = self.df[
+            (self.df["GC Content"] >= 40) & (self.df["GC Content"] <= 60)
+        ]
+        between_40_60_gc_content_list = self.get_species_name_list(
+            between_40_60_gc_content_df
+        )
+        between_40_60_gc_content = (
+            "GC content:\n40-60%",
+            between_40_60_gc_content_list,
+        )
+        self.properties.append(between_40_60_gc_content)
+
+        more_than_60_gc_content_df = self.df[self.df["GC Content"] > 60]
+        more_than_60_gc_content_list = self.get_species_name_list(
+            more_than_60_gc_content_df
+        )
+        more_than_60_gc_content = ("GC content\n> 60%", more_than_60_gc_content_list)
+        self.properties.append(more_than_60_gc_content)
