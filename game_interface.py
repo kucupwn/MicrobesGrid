@@ -60,7 +60,14 @@ class GameInterface:
             self.check_user_input(selected_value, button)  # Update the button text
             combobox_window.destroy()  # Close the Toplevel window
 
+        def on_enter(event):
+            selected_value = combobox.get()
+            if selected_value:
+                self.check_user_input(selected_value, button)
+                combobox_window.destroy()
+
         combobox.bind("<<ComboboxSelected>>", on_select)
+        combobox.bind("<Return>", on_enter)
 
     def check_user_input(self, selected_value, button):
         # Calculate the button's row and column index
