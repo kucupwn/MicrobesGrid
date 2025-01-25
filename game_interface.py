@@ -1,6 +1,8 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 
+UNKNOWN = "???"
+
 
 class GameInterface:
     def __init__(
@@ -35,6 +37,17 @@ class GameInterface:
 
         self.frame = tk.Frame(self.root)
         self.frame.pack(padx=40, pady=40)
+
+    def on_button_click(self, button):
+        button_text = button.cget("text")
+
+        if button_text == UNKNOWN:
+            self.show_combobox(button)
+        else:
+            self.open_info_panel(self)
+
+    def open_info_panel(self):
+        pass
 
     def show_combobox(self, button):
         # Create a new top-level window for the Combobox
@@ -82,7 +95,7 @@ class GameInterface:
         if selected_value in intersection:
             button.config(text=selected_value)
         else:
-            button.config(text="???")
+            button.config(text=UNKNOWN)
             button.config(bg="red")
             self.reset_button_bg_delayed(button)
 
@@ -148,7 +161,7 @@ class GameInterface:
             for col_index in range(len(self.col_props)):
                 button = tk.Button(
                     self.frame,
-                    text="???",
+                    text=UNKNOWN,
                     width=20,
                     height=2,
                     justify="center",
