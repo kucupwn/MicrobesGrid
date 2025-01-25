@@ -23,7 +23,7 @@ class GameInterface:
         self.all_species = all_species
         self.restart_callback = restart_callback
         self.label_font = ("Arial", 18)
-        self.button_font = ("Arial", 14)
+        self.button_font = ("Arial", 14, "italic")
 
         self.create_root_and_frame()
         self.get_labels_cells_and_game_cells()
@@ -100,7 +100,7 @@ class GameInterface:
             text="Restart",
             width=10,
             justify="center",
-            font=self.button_font,
+            font=self.label_font,
             bg="red",
             fg="white",
             relief="groove",
