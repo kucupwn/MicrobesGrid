@@ -1,16 +1,20 @@
 import tkinter as tk
+from ttkwidgets.autocomplete import AutocompleteCombobox
 
 
 class GameInterface:
-    def __init__(self, width, height, cols, rows, game_fields, restart_callback):
+    def __init__(
+        self, width, height, cols, rows, game_fields, all_species, restart_callback
+    ):
         self.width = width
         self.height = height
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
+        self.all_species = all_species
         self.restart_callback = restart_callback
         self.label_font = ("Arial", 18)
-        self.button_font = ("Arial", 20)
+        self.button_font = ("Arial", 14)
 
         self.create_root_and_frame()
         self.get_labels_cells_and_game_cells()
@@ -23,8 +27,31 @@ class GameInterface:
         self.frame = tk.Frame(self.root)
         self.frame.pack(padx=40, pady=40)
 
-    def change_button_text(self, button):
-        button.config(text="Changed")
+    def show_combobox(self, button):
+        # Create a new top-level window for the Combobox
+        combobox_window = tk.Toplevel(self.root)
+        combobox_window.geometry(
+            "300x100+%d+%d"
+            % (
+                self.root.winfo_x() + self.root.winfo_width() // 2 - 150,
+                self.root.winfo_y() + self.root.winfo_height() // 2 - 50,
+            )
+        )  # Center on the screen
+        combobox_window.title("Select Species")
+        combobox_window.grab_set()
+
+        # Create the Combobox
+        combobox = AutocompleteCombobox(
+            combobox_window, completevalues=self.all_species
+        )
+        combobox.pack(padx=10, pady=10, fill=tk.X)
+
+        def on_select(event):
+            selected_value = combobox.get()
+            button.config(text=selected_value)  # Update the button text
+            combobox_window.destroy()  # Close the Toplevel window
+
+        combobox.bind("<<ComboboxSelected>>", on_select)
 
     def reset_ui(self, cols, rows, game_fields):
         for widget in self.frame.winfo_children():
@@ -86,7 +113,7 @@ class GameInterface:
                 button = tk.Button(
                     self.frame,
                     text="???",
-                    width=14,
+                    width=20,
                     height=2,
                     justify="center",
                     font=self.button_font,
@@ -94,9 +121,9 @@ class GameInterface:
                     relief="groove",
                     bd=2,
                     pady=20,
-                    command=lambda b=col_index + (
-                        row_index * 3
-                    ): self.change_button_text(self.game_fields[b]),
+                    command=lambda b=col_index + (row_index * 3): self.show_combobox(
+                        self.game_fields[b]
+                    ),
                 )
                 button.grid(row=row_index + 1, column=col_index + 1, padx=10, pady=10)
                 self.game_fields.append(button)

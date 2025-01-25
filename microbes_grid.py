@@ -21,8 +21,10 @@ class MicrobesGrid:
             self.cols,
             self.rows,
             self.game_fields,
+            self.dataset.all_species,
             self.restart_game,
         )
+        self.game_fields = self.interface.game_fields
 
     def init_dataset(self):
         self.dataset = GameDataset("microbes.xlsx")
@@ -70,6 +72,9 @@ class MicrobesGrid:
         self.game_fields = []
         self.get_random_rows_and_cols()
         self.interface.reset_ui(self.cols, self.rows, self.game_fields)
+
+    def open_search(self):
+        pass
 
     def main_loop(self):
         if self.running:
