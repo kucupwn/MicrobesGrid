@@ -31,19 +31,25 @@ class GameDataset:
         return df.apply(lambda row: f"{row['Genus']} {row['Species']}", axis=1).tolist()
 
     def create_property_tuple(self, col, prop):
+        # Get filtered df
         prop_df = self.df[self.df[col] == prop[0]]
+        # Extract Genus Species name as list
         prop_list = self.get_species_name_list(prop_df)
+        # Create (Label str, list) tuple
         prop_result = (f"{col}:\n{prop[0]}", prop_list)
 
         return prop_result
 
     def get_properties(self):
         for col in self.columns:
+            # Skip some column
             if col == "Domain" or col == "Genus" or col == "Species":
                 continue
 
+            # Value counter
             col_values = self.df.groupby(col, as_index=False).size()
 
+            # Custom functions for exception
             if col == "Shape":
                 self.get_shape_property()
                 continue
@@ -56,9 +62,12 @@ class GameDataset:
                 self.get_pigment_property()
                 continue
 
+            # Universal function for most
             for _, prop in col_values.iterrows():
-                if prop["size"] > 2:
+                # At least 3 occurence of a value
+                if prop["size"] >= 3:
                     prop_result = self.create_property_tuple(col, prop)
+                    # Append to all properties
                     self.properties.append(prop_result)
 
     def get_shape_property(self):

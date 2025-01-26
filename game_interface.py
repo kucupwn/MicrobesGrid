@@ -126,6 +126,7 @@ class GameInterface:
         for widget in self.frame.winfo_children():
             widget.destroy()
 
+        # Generate new random game in main file
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
@@ -138,11 +139,13 @@ class GameInterface:
         combobox_window = tk.Toplevel(self.root)
         combobox_window.title("Select Species")
 
+        # Toplevel properies
         combobox_width = 300
         combobox_height = 60
         position_left, position_top = self.window_placement_middle(
             combobox_window, combobox_width, combobox_height
         )
+        # Set window size and position
         combobox_window.geometry(
             f"{combobox_width}x{combobox_height}+{position_left}+{position_top}"
         )
@@ -156,20 +159,23 @@ class GameInterface:
         return {"window": combobox_window, "combobox": combobox}
 
     def input_combobox_events(self, button):
+        # Disable clicking after successful guess
         if button.cget("text") != UNKNOWN:
             return
 
         combobox = self.create_combobox()
 
+        # Click event
         def on_select(event):
             selected_value = combobox["combobox"].get()
-            self.check_user_input(selected_value, button)  # Update the button text
+            self.user_input_feedback(selected_value, button)  # Update the button text
             combobox["window"].destroy()  # Close the Toplevel window
 
+        # Enter event
         def on_enter(event):
             selected_value = combobox["combobox"].get()
             if selected_value:
-                self.check_user_input(selected_value, button)
+                self.user_input_feedback(selected_value, button)
                 combobox["window"].destroy()
 
         combobox["combobox"].bind("<<ComboboxSelected>>", on_select)
@@ -177,7 +183,7 @@ class GameInterface:
 
         combobox["combobox"].focus()
 
-    def check_user_input(self, selected_value, button):
+    def user_input_feedback(self, selected_value, button):
         # Calculate the button's row and column index
         button_index = self.game_fields.index(button)
         row_index = button_index // len(self.col_props)
@@ -188,11 +194,14 @@ class GameInterface:
 
         # Check if the selected value exists in the intersection for this position
         if selected_value in intersection:
+            # Add linebreak for better display
             line_break_name = selected_value.replace(" ", "\n")
+            # Change button text to input
             button.config(text=line_break_name)
         else:
-            button.config(text=UNKNOWN)
+            # Change background to red
             button.config(bg="red")
+            # 1 sec later background change to default
             self.reset_button_bg_delayed(button)
 
     def reset_button_bg_delayed(self, button):
@@ -201,12 +210,14 @@ class GameInterface:
     def info_centre_combobox_events(self):
         combobox = self.create_combobox()
 
+        # Click event
         def on_select(event):
             selected_value = combobox["combobox"].get()
             self.display_species_info(selected_value)
             combobox["window"].grab_release()  # Release the lock
             combobox["window"].destroy()  # Close the Toplevel window
 
+        # Enter event
         def on_enter(event):
             selected_value = combobox["combobox"].get()
             if selected_value:
@@ -228,11 +239,11 @@ class GameInterface:
             (self.df["Genus"] == name_cols[0]) & (self.df["Species"] == name_cols[1])
         ]
 
-        # Create a new top-level window for the table view
+        # Create a new top-level window for info view
         info_window = tk.Toplevel(self.root)
         info_window.title(f"Details for {name}")
 
-        # Center the Toplevel window on the screen
+        # Toplevel properties
         window_width = 350
         window_height = 680
         position_left, position_top = self.window_placement_middle(

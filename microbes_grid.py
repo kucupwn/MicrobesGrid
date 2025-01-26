@@ -66,7 +66,7 @@ class MicrobesGrid:
                 common_3 = list(name_list_set & set(cols[2][1]))
 
                 # Check if there are at least 3 match in all 3 intersection
-                if len(common_1) > 2 and len(common_2) > 2 and len(common_3) > 2:
+                if len(common_1) >= 3 and len(common_2) >= 3 and len(common_3) >= 3:
                     rows.append(prop)
                     self.intersections.append([common_1, common_2, common_3])
 
