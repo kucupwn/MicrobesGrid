@@ -74,8 +74,11 @@ class MicrobesGrid:
         self.cols = []
         self.rows = []
         self.game_fields = []
+        self.intersections = []
         self.get_random_rows_and_cols()
-        self.interface.reset_ui(self.cols, self.rows, self.game_fields)
+        self.interface.reset_ui(
+            self.cols, self.rows, self.game_fields, self.intersections
+        )
 
     def main_loop(self):
         if self.running:

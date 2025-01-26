@@ -122,7 +122,7 @@ class GameInterface:
         )
         info_button.grid(row=4, column=0, padx=10, pady=10)
 
-    def reset_ui(self, cols, rows, game_fields):
+    def reset_ui(self, cols, rows, game_fields, intersections):
         for widget in self.frame.winfo_children():
             widget.destroy()
 
@@ -130,6 +130,7 @@ class GameInterface:
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
+        self.intersections = intersections
         self.get_labels_cells_and_game_cells()
 
     # Event handling
