@@ -9,6 +9,7 @@ SPHERE_SHAPE = [
 ]
 SPIRAL_SHAPE = ["Spiral", "Spirillum"]
 OTHER_SHAPE = ["Filamentous", "Pleomorphic", "Vibrio"]
+SKIP_COLUMNS = ["Domain", "Genus", "Species"]
 
 
 class GameDataset:
@@ -43,11 +44,8 @@ class GameDataset:
     def get_properties(self):
         for col in self.columns:
             # Skip some column
-            if col == "Domain" or col == "Genus" or col == "Species":
+            if col in SKIP_COLUMNS:
                 continue
-
-            # Value counter
-            col_values = self.df.groupby(col, as_index=False).size()
 
             # Custom functions for exception
             if col == "Shape":
@@ -61,6 +59,9 @@ class GameDataset:
             if col == "Pigment Production":
                 self.get_pigment_property()
                 continue
+
+            # Value counter
+            col_values = self.df.groupby(col, as_index=False).size()
 
             # Universal function for most
             for _, prop in col_values.iterrows():
