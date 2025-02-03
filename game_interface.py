@@ -1,6 +1,5 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
-from tkinter import ttk
 
 UNKNOWN = "???"
 
@@ -82,7 +81,7 @@ class GameInterface:
                 text=row_prop[0],
                 width=16,
                 height=4,
-                bg="lightgreen",
+                bg="lightblue",
                 font=self.label_font,
                 relief="ridge",
                 bd=3,
