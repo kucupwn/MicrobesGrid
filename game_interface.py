@@ -183,6 +183,9 @@ class GameInterface:
 
         combobox["combobox"].focus()
 
+    def check_win(self):
+        pass
+
     def user_input_feedback(self, selected_value, button):
         # Calculate the button's row and column index
         button_index = self.game_fields.index(button)
