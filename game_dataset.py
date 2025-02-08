@@ -65,8 +65,8 @@ class GameDataset:
 
             # Universal function for most
             for _, prop in col_values.iterrows():
-                # At least 3 occurence of a value
-                if prop["size"] >= 3:
+                # At least 5 occurence of a value
+                if prop["size"] >= 5:
                     prop_result = self.create_property_tuple(col, prop)
                     # Append to all properties
                     self.properties.append(prop_result)
