@@ -158,6 +158,12 @@ class GameInterface:
 
     # Event handling
 
+    def bind_enter_event_function(self, combobox, func):
+        combobox.bind("<<ComboboxSelected>>", func)
+        combobox.bind("<Return>", func)
+
+        combobox.focus()
+
     def input_combobox_events(self, button):
         # Disable clicking after successful guess
         if button.cget("text") != UNKNOWN:
@@ -172,10 +178,7 @@ class GameInterface:
                 self.user_input_feedback(selected_value, button)
                 combobox["window"].destroy()
 
-        combobox["combobox"].bind("<<ComboboxSelected>>", on_enter)
-        combobox["combobox"].bind("<Return>", on_enter)
-
-        combobox["combobox"].focus()
+        self.bind_enter_event_function(combobox["combobox"], on_enter)
 
     def check_win(self):
         for button in self.game_fields:
@@ -243,10 +246,7 @@ class GameInterface:
                 combobox["window"].grab_release()
                 combobox["window"].destroy()
 
-        combobox["combobox"].bind("<<ComboboxSelected>>", on_enter)
-        combobox["combobox"].bind("<Return>", on_enter)
-
-        combobox["combobox"].focus()
+        self.bind_enter_event_function(combobox["combobox"], on_enter)
 
     def display_species_info(self, name):
         # Split name into Genus and Species
