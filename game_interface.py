@@ -132,23 +132,23 @@ class GameInterface:
         self.intersections = intersections
         self.get_labels_cells_and_game_cells()
 
+    def create_toplevel_window(self, width, height, title):
+        toplevel_window = tk.Toplevel(self.root)
+        toplevel_window.title(title)
+
+        position_left, position_top = self.window_placement_middle(
+            toplevel_window, width, height
+        )
+
+        toplevel_window.geometry(f"{width}x{height}+{position_left}+{position_top}")
+
+        return toplevel_window
+
     # Event handling
 
     def create_combobox(self):
         # Create a new top-level window for the Combobox
-        combobox_window = tk.Toplevel(self.root)
-        combobox_window.title("Select Species")
-
-        # Toplevel properies
-        combobox_width = 300
-        combobox_height = 60
-        position_left, position_top = self.window_placement_middle(
-            combobox_window, combobox_width, combobox_height
-        )
-        # Set window size and position
-        combobox_window.geometry(
-            f"{combobox_width}x{combobox_height}+{position_left}+{position_top}"
-        )
+        combobox_window = self.create_toplevel_window(300, 60, "Select Species")
 
         # Create the Combobox
         combobox = AutocompleteCombobox(
@@ -192,18 +192,7 @@ class GameInterface:
 
     def display_win(self):
         # Create a new top-level window for info view
-        info_window = tk.Toplevel(self.root)
-        info_window.title(f"Game Over")
-
-        # Toplevel properties
-        window_width = 450
-        window_height = 150
-        position_left, position_top = self.window_placement_middle(
-            info_window, window_width, window_height
-        )
-        info_window.geometry(
-            f"{window_width}x{window_height}+{position_left}+{position_top}"
-        )
+        info_window = self.create_toplevel_window(450, 150, "Game Over")
 
         tk.Label(
             info_window,
@@ -274,18 +263,7 @@ class GameInterface:
         ]
 
         # Create a new top-level window for info view
-        info_window = tk.Toplevel(self.root)
-        info_window.title(f"Details for {name}")
-
-        # Toplevel properties
-        window_width = 350
-        window_height = 680
-        position_left, position_top = self.window_placement_middle(
-            info_window, window_width, window_height
-        )
-        info_window.geometry(
-            f"{window_width}x{window_height}+{position_left}+{position_top}"
-        )
+        info_window = self.create_toplevel_window(350, 680, f"Details for {name}")
 
         # Add key-value pairs in the format "Column Name: Value"
         for col in self.df.columns:
