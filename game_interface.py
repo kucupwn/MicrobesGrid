@@ -28,6 +28,7 @@ class GameInterface:
         self.df = df
         self.label_font = ("Arial", 18)
         self.button_font = ("Arial", 14, "italic")
+        self.attempts = 0
 
         self.create_root_and_frame()
         self.get_labels_cells_and_game_cells()
@@ -189,12 +190,21 @@ class GameInterface:
 
     def display_win(self):
         # Create a new top-level window for info view
-        info_window = self.create_toplevel_window(450, 150, "Game Over")
+        info_window = self.create_toplevel_window(460, 160, "Game Over")
 
         tk.Label(
             info_window,
             text="You Won!",
             font=("Arial", 72),
+            justify="center",
+            padx=10,
+            pady=5,
+        ).pack()
+
+        tk.Label(
+            info_window,
+            text=f"... from {self.attempts} attempts.",
+            font=("Arial", 24),
             justify="center",
             padx=10,
             pady=5,
@@ -209,6 +219,8 @@ class GameInterface:
         return False
 
     def user_input_feedback(self, selected_value, button):
+        self.attempts += 1
+
         # Calculate the button's row and column index
         button_index = self.game_fields.index(button)
         row_index = button_index // len(self.col_props)
