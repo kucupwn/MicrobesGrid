@@ -144,8 +144,6 @@ class GameInterface:
 
         return toplevel_window
 
-    # Event handling
-
     def create_combobox(self):
         # Create a new top-level window for the Combobox
         combobox_window = self.create_toplevel_window(300, 60, "Select Species")
@@ -157,6 +155,8 @@ class GameInterface:
         combobox.pack(padx=10, pady=10, fill=tk.X)
 
         return {"window": combobox_window, "combobox": combobox}
+
+    # Event handling
 
     def input_combobox_events(self, button):
         # Disable clicking after successful guess
@@ -203,6 +203,14 @@ class GameInterface:
             pady=5,
         ).pack()
 
+    def is_existing_value(self, value):
+        for button in self.game_fields:
+            button_text = button.cget("text").replace("\n", " ")
+            if button_text == value:
+                return True
+
+        return False
+
     def user_input_feedback(self, selected_value, button):
         # Calculate the button's row and column index
         button_index = self.game_fields.index(button)
@@ -213,7 +221,12 @@ class GameInterface:
         intersection = self.intersections[row_index][col_index]
 
         # Check if the selected value exists in the intersection for this position
-        if selected_value in intersection:
+        if selected_value not in intersection or self.is_existing_value(selected_value):
+            # Change background to red
+            button.config(bg="red")
+            # 1 sec later background change to default
+            self.reset_button_bg_delayed(button)
+        else:
             # Add linebreak for better display
             line_break_name = selected_value.replace(" ", "\n")
             # Change button text to input
@@ -221,11 +234,6 @@ class GameInterface:
 
             if self.check_win():
                 self.display_win()
-        else:
-            # Change background to red
-            button.config(bg="red")
-            # 1 sec later background change to default
-            self.reset_button_bg_delayed(button)
 
     def reset_button_bg_delayed(self, button):
         button.after(1000, lambda: button.config(bg="lightgray"))
