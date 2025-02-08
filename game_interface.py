@@ -230,7 +230,7 @@ class GameInterface:
             # Change button text to input
             button.config(text=line_break_name)
 
-            if self.check_win:
+            if self.check_win():
                 self.display_win()
         else:
             # Change background to red
