@@ -184,7 +184,35 @@ class GameInterface:
         combobox["combobox"].focus()
 
     def check_win(self):
-        pass
+        for button in self.game_fields:
+            if button.cget("text") == UNKNOWN:
+                return False
+
+        return True
+
+    def display_win(self):
+        # Create a new top-level window for info view
+        info_window = tk.Toplevel(self.root)
+        info_window.title(f"Game Over")
+
+        # Toplevel properties
+        window_width = 450
+        window_height = 150
+        position_left, position_top = self.window_placement_middle(
+            info_window, window_width, window_height
+        )
+        info_window.geometry(
+            f"{window_width}x{window_height}+{position_left}+{position_top}"
+        )
+
+        tk.Label(
+            info_window,
+            text="You Won!",
+            font=("Arial", 72),
+            justify="center",
+            padx=10,
+            pady=5,
+        ).pack()
 
     def user_input_feedback(self, selected_value, button):
         # Calculate the button's row and column index
@@ -201,6 +229,9 @@ class GameInterface:
             line_break_name = selected_value.replace(" ", "\n")
             # Change button text to input
             button.config(text=line_break_name)
+
+            if self.check_win:
+                self.display_win()
         else:
             # Change background to red
             button.config(bg="red")
