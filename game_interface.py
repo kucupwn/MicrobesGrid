@@ -165,12 +165,6 @@ class GameInterface:
 
         combobox = self.create_combobox()
 
-        # Click event
-        def on_select(event):
-            selected_value = combobox["combobox"].get()
-            self.user_input_feedback(selected_value, button)  # Update the button text
-            combobox["window"].destroy()  # Close the Toplevel window
-
         # Enter event
         def on_enter(event):
             selected_value = combobox["combobox"].get()
@@ -178,7 +172,7 @@ class GameInterface:
                 self.user_input_feedback(selected_value, button)
                 combobox["window"].destroy()
 
-        combobox["combobox"].bind("<<ComboboxSelected>>", on_select)
+        combobox["combobox"].bind("<<ComboboxSelected>>", on_enter)
         combobox["combobox"].bind("<Return>", on_enter)
 
         combobox["combobox"].focus()
@@ -241,13 +235,6 @@ class GameInterface:
     def info_centre_combobox_events(self):
         combobox = self.create_combobox()
 
-        # Click event
-        def on_select(event):
-            selected_value = combobox["combobox"].get()
-            self.display_species_info(selected_value)
-            combobox["window"].grab_release()  # Release the lock
-            combobox["window"].destroy()  # Close the Toplevel window
-
         # Enter event
         def on_enter(event):
             selected_value = combobox["combobox"].get()
@@ -256,7 +243,7 @@ class GameInterface:
                 combobox["window"].grab_release()
                 combobox["window"].destroy()
 
-        combobox["combobox"].bind("<<ComboboxSelected>>", on_select)
+        combobox["combobox"].bind("<<ComboboxSelected>>", on_enter)
         combobox["combobox"].bind("<Return>", on_enter)
 
         combobox["combobox"].focus()
