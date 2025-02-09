@@ -2,6 +2,7 @@ import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 
 UNKNOWN = "???"
+INFO = "Info Centre"
 
 
 class GameInterface:
@@ -111,14 +112,14 @@ class GameInterface:
 
         info_button = tk.Button(
             self.frame,
-            text="Info Centre",
+            text=INFO,
             width=10,
             justify="center",
             font=self.button_font,
             bg="lightgray",
             relief="groove",
             bd=2,
-            command=self.info_centre_combobox_events,
+            command=self.input_combobox_events,
         )
         info_button.grid(row=4, column=0, padx=10, pady=10)
 
@@ -167,10 +168,14 @@ class GameInterface:
 
         combobox.focus()
 
-    def input_combobox_events(self, button):
-        # Disable clicking after successful guess
-        if button.cget("text") != UNKNOWN:
-            return
+    def input_combobox_events(self, button=None):
+        # For gamefield buttons
+        if button is not None:
+            button_text = button.cget("text")
+
+            # Disable clicking after successful guess
+            if button_text != UNKNOWN:
+                return
 
         combobox = self.create_combobox()
 
@@ -178,23 +183,18 @@ class GameInterface:
         def on_enter(event):
             selected_value = combobox["combobox"].get()
             if selected_value:
-                self.user_input_feedback(selected_value, button)
-                combobox["window"].destroy()
+                # Only None is Info centre
+                if button is None:
+                    self.display_species_info(selected_value)
+                # Gamefields buttons
+                else:
+                    self.user_input_feedback(selected_value, button)
+
+            # Close combobox window
+            combobox["window"].grab_release()
+            combobox["window"].destroy()
 
         # Bind function to combobox
-        self.bind_enter_event_function(combobox["combobox"], on_enter)
-
-    def info_centre_combobox_events(self):
-        combobox = self.create_combobox()
-
-        # Enter event
-        def on_enter(event):
-            selected_value = combobox["combobox"].get()
-            if selected_value:
-                self.display_species_info(selected_value)
-                combobox["window"].grab_release()
-                combobox["window"].destroy()
-
         self.bind_enter_event_function(combobox["combobox"], on_enter)
 
     def check_win(self):
