@@ -137,10 +137,12 @@ class GameInterface:
         toplevel_window = tk.Toplevel(self.root)
         toplevel_window.title(title)
 
+        # Calculate position
         position_left, position_top = self.window_placement_middle(
             toplevel_window, width, height
         )
 
+        # Set position
         toplevel_window.geometry(f"{width}x{height}+{position_left}+{position_top}")
 
         return toplevel_window
@@ -179,10 +181,25 @@ class GameInterface:
                 self.user_input_feedback(selected_value, button)
                 combobox["window"].destroy()
 
+        # Bind function to combobox
+        self.bind_enter_event_function(combobox["combobox"], on_enter)
+
+    def info_centre_combobox_events(self):
+        combobox = self.create_combobox()
+
+        # Enter event
+        def on_enter(event):
+            selected_value = combobox["combobox"].get()
+            if selected_value:
+                self.display_species_info(selected_value)
+                combobox["window"].grab_release()
+                combobox["window"].destroy()
+
         self.bind_enter_event_function(combobox["combobox"], on_enter)
 
     def check_win(self):
         for button in self.game_fields:
+            # Not win if there's still UNKNOWN
             if button.cget("text") == UNKNOWN:
                 return False
 
@@ -201,6 +218,7 @@ class GameInterface:
             pady=5,
         ).pack()
 
+        # Display attempts too
         tk.Label(
             info_window,
             text=f"... from {self.attempts} attempts.",
@@ -210,15 +228,19 @@ class GameInterface:
             pady=5,
         ).pack()
 
+    # Check for existing value (no duplicate answer)
     def is_existing_value(self, value):
         for button in self.game_fields:
+            # Transform previous answers line break back to space for comparison
             button_text = button.cget("text").replace("\n", " ")
+            # True if answer is already used
             if button_text == value:
                 return True
 
         return False
 
     def user_input_feedback(self, selected_value, button):
+        # Count attempts
         self.attempts += 1
 
         # Calculate the button's row and column index
@@ -246,19 +268,6 @@ class GameInterface:
 
     def reset_button_bg_delayed(self, button):
         button.after(1000, lambda: button.config(bg="lightgray"))
-
-    def info_centre_combobox_events(self):
-        combobox = self.create_combobox()
-
-        # Enter event
-        def on_enter(event):
-            selected_value = combobox["combobox"].get()
-            if selected_value:
-                self.display_species_info(selected_value)
-                combobox["window"].grab_release()
-                combobox["window"].destroy()
-
-        self.bind_enter_event_function(combobox["combobox"], on_enter)
 
     def display_species_info(self, name):
         # Split name into Genus and Species
