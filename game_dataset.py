@@ -13,25 +13,27 @@ SKIP_COLUMNS = ["Domain", "Genus", "Species"]
 
 
 class GameDataset:
-    def __init__(self, dataset):
+    def __init__(self, dataset: str) -> None:
         self.df = pd.read_excel(dataset)
         self.columns = list(self.df.columns)
-        self.all_species = []
+        self.all_species = ()
         self.properties = []
+        self.all_species = self.get_all_species()
 
-    def get_all_species(self):
+    def get_all_species(self) -> list:
         # Get all species for search list
         all_sp = self.df.apply(
             lambda row: f"{row['Genus']} {row['Species']}", axis=1
         ).tolist()
         all_sp.sort()
-        self.all_species = all_sp
 
-    def get_species_name_list(self, df):
+        return all_sp
+
+    def get_species_name_list(self, df: pd.DataFrame) -> pd.DataFrame:
         # Automate name extract to list
         return df.apply(lambda row: f"{row['Genus']} {row['Species']}", axis=1).tolist()
 
-    def create_property_tuple(self, col, prop):
+    def create_property_tuple(self, col: pd.Series, prop: str) -> tuple:
         # Get filtered df
         prop_df = self.df[self.df[col] == prop[0]]
         # Extract Genus Species name as list
@@ -41,7 +43,7 @@ class GameDataset:
 
         return prop_result
 
-    def get_properties(self):
+    def get_properties(self) -> None:
         for col in self.columns:
             # Skip some column
             if col in SKIP_COLUMNS:
@@ -71,7 +73,7 @@ class GameDataset:
                     # Append to all properties
                     self.properties.append(prop_result)
 
-    def get_shape_property(self):
+    def get_shape_property(self) -> None:
         rod_shape_df = self.df[self.df["Shape"] == "Rod"]
         rod_shape_list = self.get_species_name_list(rod_shape_df)
         rod_shape = ("Shape:\nRod", rod_shape_list)
@@ -87,7 +89,7 @@ class GameDataset:
         other_shape = ("Shape:\nNOT Rod or Sphere", other_shape_list)
         self.properties.append(other_shape)
 
-    def get_gc_content_property(self):
+    def get_gc_content_property(self) -> None:
         less_than_40_gc_content_df = self.df[self.df["GC Content"] < 40]
         less_than_40_gc_content_list = self.get_species_name_list(
             less_than_40_gc_content_df
@@ -114,7 +116,7 @@ class GameDataset:
         more_than_60_gc_content = ("GC content\n> 60%", more_than_60_gc_content_list)
         self.properties.append(more_than_60_gc_content)
 
-    def get_pigment_property(self):
+    def get_pigment_property(self) -> None:
         not_pigmented_df = self.df[self.df["Pigment Production"] == "No"]
         not_pigmented_list = self.get_species_name_list(not_pigmented_df)
         not_pigmented = ("Pigment Production:\nNo", not_pigmented_list)

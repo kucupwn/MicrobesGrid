@@ -4,7 +4,7 @@ from game_dataset import GameDataset
 
 
 class MicrobesGrid:
-    def __init__(self):
+    def __init__(self) -> None:
         self.width = 1280
         self.height = 760
         self.running = True
@@ -29,12 +29,12 @@ class MicrobesGrid:
         )
         self.game_fields = self.interface.game_fields
 
-    def init_dataset(self):
+    def init_dataset(self) -> None:
         self.dataset = GameDataset("microbes.xlsx")
         self.dataset.get_all_species()
         self.dataset.get_properties()
 
-    def get_random_rows_and_cols(self):
+    def get_random_rows_and_cols(self) -> None:
         while True:
             # Initiate 3 random columns
             cols = random.sample(self.dataset.properties, 3)
@@ -70,7 +70,7 @@ class MicrobesGrid:
                     rows.append(prop)
                     self.intersections.append([common_1, common_2, common_3])
 
-    def restart_game(self):
+    def restart_game(self) -> None:
         self.cols = []
         self.rows = []
         self.game_fields = []
@@ -80,7 +80,7 @@ class MicrobesGrid:
             self.cols, self.rows, self.game_fields, self.intersections
         )
 
-    def main_loop(self):
+    def main_loop(self) -> None:
         if self.running:
             self.interface.root.mainloop()
 

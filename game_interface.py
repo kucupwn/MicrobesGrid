@@ -1,5 +1,6 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
+import pandas as pd
 
 UNKNOWN = "???"
 INFO = "Info Centre"
@@ -8,16 +9,16 @@ INFO = "Info Centre"
 class GameInterface:
     def __init__(
         self,
-        width,
-        height,
-        cols,
-        rows,
-        game_fields,
-        intersections,
-        all_species,
-        restart_callback,
-        df,
-    ):
+        width: int,
+        height: int,
+        cols: list,
+        rows: list,
+        game_fields: list,
+        intersections: list,
+        all_species: tuple,
+        restart_callback: function,
+        df: pd.Dataframe,
+    ) -> None:
         self.width = width
         self.height = height
         self.col_props = cols
@@ -36,7 +37,7 @@ class GameInterface:
 
     # UI Setup
 
-    def create_root_and_frame(self):
+    def create_root_and_frame(self) -> None:
         self.root = tk.Tk()
         self.root.geometry(f"{self.width}x{self.height}")
         self.root.title("Microbes Grid")
@@ -44,7 +45,7 @@ class GameInterface:
         self.frame = tk.Frame(self.root)
         self.frame.pack(padx=40, pady=40)
 
-    def get_labels_cells_and_game_cells(self):
+    def get_labels_cells_and_game_cells(self) -> None:
         # Set up gamefield
 
         # Add restart button
@@ -123,7 +124,9 @@ class GameInterface:
         )
         info_button.grid(row=4, column=0, padx=10, pady=10)
 
-    def reset_ui(self, cols, rows, game_fields, intersections):
+    def reset_ui(
+        self, cols: list, rows: list, game_fields: list, intersections: list
+    ) -> None:
         for widget in self.frame.winfo_children():
             widget.destroy()
 
@@ -134,7 +137,9 @@ class GameInterface:
         self.intersections = intersections
         self.get_labels_cells_and_game_cells()
 
-    def create_toplevel_window(self, width, height, title):
+    def create_toplevel_window(
+        self, width: int, height: int, title: str
+    ) -> tk.Toplevel:
         toplevel_window = tk.Toplevel(self.root)
         toplevel_window.title(title)
 
@@ -148,7 +153,7 @@ class GameInterface:
 
         return toplevel_window
 
-    def create_combobox(self):
+    def create_combobox(self) -> dict:
         # Create a new top-level window for the Combobox
         combobox_window = self.create_toplevel_window(300, 60, "Select Species")
 
@@ -162,13 +167,15 @@ class GameInterface:
 
     # Event handling
 
-    def bind_enter_event_function(self, combobox, func):
+    def bind_enter_event_function(
+        self, combobox: AutocompleteCombobox, func: function
+    ) -> None:
         combobox.bind("<<ComboboxSelected>>", func)
         combobox.bind("<Return>", func)
 
         combobox.focus()
 
-    def input_combobox_events(self, button=None):
+    def input_combobox_events(self, button: tk.Button = None) -> None:
         # For gamefield buttons
         if button is not None:
             button_text = button.cget("text")
@@ -180,7 +187,7 @@ class GameInterface:
         combobox = self.create_combobox()
 
         # Enter event
-        def on_enter(event):
+        def on_enter(event: tk.Event) -> None:
             selected_value = combobox["combobox"].get()
             if selected_value:
                 # Only None is Info centre
@@ -197,7 +204,7 @@ class GameInterface:
         # Bind function to combobox
         self.bind_enter_event_function(combobox["combobox"], on_enter)
 
-    def check_win(self):
+    def check_win(self) -> bool:
         for button in self.game_fields:
             # Not win if there's still UNKNOWN
             if button.cget("text") == UNKNOWN:
@@ -205,7 +212,7 @@ class GameInterface:
 
         return True
 
-    def display_win(self):
+    def display_win(self) -> None:
         # Create a new top-level window for info view
         info_window = self.create_toplevel_window(460, 160, "Game Over")
 
@@ -229,7 +236,7 @@ class GameInterface:
         ).pack()
 
     # Check for existing value (no duplicate answer)
-    def is_existing_value(self, value):
+    def is_existing_value(self, value: str) -> bool:
         for button in self.game_fields:
             # Transform previous answers line break back to space for comparison
             button_text = button.cget("text").replace("\n", " ")
@@ -239,7 +246,9 @@ class GameInterface:
 
         return False
 
-    def user_input_feedback(self, selected_value, button):
+    def user_input_feedback(
+        self, selected_value: AutocompleteCombobox, button: tk.Button
+    ) -> None:
         # Count attempts
         self.attempts += 1
 
@@ -266,10 +275,10 @@ class GameInterface:
             if self.check_win():
                 self.display_win()
 
-    def reset_button_bg_delayed(self, button):
+    def reset_button_bg_delayed(self, button: tk.Button) -> None:
         button.after(1000, lambda: button.config(bg="lightgray"))
 
-    def display_species_info(self, name):
+    def display_species_info(self, name: str) -> None:
         # Split name into Genus and Species
         name_cols = name.split(" ")
 
@@ -296,7 +305,7 @@ class GameInterface:
 
     # Util
 
-    def window_placement_middle(self, window, width, height):
+    def window_placement_middle(self, window: tk.Toplevel, width: int, height: int):
         screen_width = window.winfo_screenwidth()
         screen_height = window.winfo_screenheight()
         position_top = int(screen_height / 2 - height / 2)
