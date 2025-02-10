@@ -1,6 +1,7 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 import pandas as pd
+from typing import Callable
 
 UNKNOWN = "???"
 INFO = "Info Centre"
@@ -16,8 +17,8 @@ class GameInterface:
         game_fields: list,
         intersections: list,
         all_species: tuple,
-        restart_callback: function,
-        df: pd.Dataframe,
+        restart_callback: Callable,
+        df: pd.DataFrame,
     ) -> None:
         self.width = width
         self.height = height
@@ -168,7 +169,7 @@ class GameInterface:
     # Event handling
 
     def bind_enter_event_function(
-        self, combobox: AutocompleteCombobox, func: function
+        self, combobox: AutocompleteCombobox, func: Callable
     ) -> None:
         combobox.bind("<<ComboboxSelected>>", func)
         combobox.bind("<Return>", func)
