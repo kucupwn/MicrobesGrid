@@ -57,7 +57,7 @@ class MicrobesGrid:
             shuffled_properties = self.dataset.properties[:]
             random.shuffle(shuffled_properties)
 
-            for prop in self.dataset.properties:
+            for prop in shuffled_properties:
                 # Return when all cols and rows got matched
                 if len(rows) == 3:
                     self.rows = rows
