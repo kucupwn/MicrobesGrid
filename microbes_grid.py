@@ -30,11 +30,23 @@ class MicrobesGrid:
         self.game_fields = self.interface.game_fields
 
     def init_dataset(self) -> None:
+        """
+        Initiate dataset to work from
+        All species is a list of strings (eg. 'Staphylococcus aureus')
+        Properties is a list of tuples: [0] is the property definition, [1] is the list of names
+        """
+
         self.dataset = GameDataset("microbes.xlsx")
         self.dataset.get_all_species()
         self.dataset.get_properties()
 
     def get_random_rows_and_cols(self) -> None:
+        """
+        Sets up the game's main logic
+        Randomly get 3 properties (y values)
+        Get 3 more and check if there are enough intersection values
+        """
+
         while True:
             # Initiate 3 random columns
             cols = random.sample(self.dataset.properties, 3)
@@ -71,6 +83,11 @@ class MicrobesGrid:
                     self.intersections.append([common_1, common_2, common_3])
 
     def restart_game(self) -> None:
+        """
+        Empty all lists for new generation
+        Resets UI
+        """
+
         self.cols = []
         self.rows = []
         self.game_fields = []
