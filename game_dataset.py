@@ -30,20 +30,36 @@ class GameDataset:
         return all_sp
 
     def get_species_name_list(self, df: pd.DataFrame) -> pd.DataFrame:
-        # Automate name extract to list
+        """
+        Automate name extract
+        Returns all names as list (eg. 'Vibrio cholerae')
+        """
+
         return df.apply(lambda row: f"{row['Genus']} {row['Species']}", axis=1).tolist()
 
-    def create_property_tuple(self, col: pd.Series, prop: str) -> tuple:
+    def create_property_tuple(self, col: str, prop: pd.Series) -> tuple:
+        """
+        Args: col is column's name, prop is pandas series (column name with value, and size (count))
+        Creates names list
+        Returns tuple, [0]: 'column_name: *linebreak* property_value', [1]: list of names with common property values
+        """
+
         # Get filtered df
         prop_df = self.df[self.df[col] == prop[0]]
         # Extract Genus Species name as list
         prop_list = self.get_species_name_list(prop_df)
         # Create (Label str, list) tuple
+        # Add line break (\n) for better display
         prop_result = (f"{col}:\n{prop[0]}", prop_list)
 
         return prop_result
 
     def get_properties(self) -> None:
+        """
+        Get all property values with at least 5 occurence (eg. in column 'Foodborne' there are at least 5 'yes')
+        Handle special property values
+        """
+
         for col in self.columns:
             # Skip some column
             if col in SKIP_COLUMNS:
@@ -72,6 +88,8 @@ class GameDataset:
                     prop_result = self.create_property_tuple(col, prop)
                     # Append to all properties
                     self.properties.append(prop_result)
+
+    # Special property values
 
     def get_shape_property(self) -> None:
         rod_shape_df = self.df[self.df["Shape"] == "Rod"]
