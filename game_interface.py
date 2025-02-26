@@ -200,6 +200,11 @@ class GameInterface:
         combobox.focus()
 
     def input_combobox_events(self, button: tk.Button = None) -> None:
+        """
+        Creates combobox only if cell has no answer yet
+        Handles input events in combobox
+        """
+
         # For gamefield buttons
         if button is not None:
             button_text = button.cget("text")
@@ -229,6 +234,11 @@ class GameInterface:
         self.bind_enter_event_function(combobox["combobox"], on_enter)
 
     def check_win(self) -> bool:
+        """
+        Checks if all cells are answered correctly
+        Returns bool
+        """
+
         for button in self.game_fields:
             # Not win if there's still UNKNOWN
             if button.cget("text") == UNKNOWN:
@@ -237,6 +247,10 @@ class GameInterface:
         return True
 
     def display_win(self) -> None:
+        """
+        Creates top level window with win feedback and attempt counts
+        """
+
         # Create a new top-level window for info view
         info_window = self.create_toplevel_window(460, 160, "Game Over")
 
@@ -259,8 +273,12 @@ class GameInterface:
             pady=5,
         ).pack()
 
-    # Check for existing value (no duplicate answer)
     def is_existing_value(self, value: str) -> bool:
+        """
+        Checks if a name is already used
+        Returns bool
+        """
+
         for button in self.game_fields:
             # Transform previous answers line break back to space for comparison
             button_text = button.cget("text").replace("\n", " ")
@@ -273,6 +291,14 @@ class GameInterface:
     def user_input_feedback(
         self, selected_value: AutocompleteCombobox, button: tk.Button
     ) -> None:
+        """
+        Gets buttons position in game_fields
+        Checks if answer is correct
+        If correct, change button text to answer
+        If not correct, change button's background color to red, then back to default
+        Checks win
+        """
+
         # Count attempts
         self.attempts += 1
 
@@ -300,9 +326,18 @@ class GameInterface:
                 self.display_win()
 
     def reset_button_bg_delayed(self, button: tk.Button) -> None:
+        """
+        Changes back buttons background to default with delay
+        """
+
         button.after(1000, lambda: button.config(bg="lightgray"))
 
     def display_species_info(self, name: str) -> None:
+        """
+        Creates top level window for info centre display
+        Displays all information of choosen bacteria
+        """
+
         # Split name into Genus and Species
         name_cols = name.split(" ")
 
@@ -330,6 +365,10 @@ class GameInterface:
     # Util
 
     def window_placement_middle(self, window: tk.Toplevel, width: int, height: int):
+        """
+        Function for positioning top level windows to middle on x and y
+        """
+
         screen_width = window.winfo_screenwidth()
         screen_height = window.winfo_screenheight()
         position_top = int(screen_height / 2 - height / 2)
