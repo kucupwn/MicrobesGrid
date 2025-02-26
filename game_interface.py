@@ -347,20 +347,24 @@ class GameInterface:
         ]
 
         # Create a new top-level window for info view
-        info_window = self.create_toplevel_window(350, 680, f"Details for {name}")
+        info_window = self.create_toplevel_window(400, 680, f"Details for {name}")
 
-        # Add key-value pairs in the format "Column Name: Value"
-        for col in self.df.columns:
-            value = name_row.iloc[0][col]  # Get the value for the current column
+        # Create a frame inside the window to organize labels
+        frame = tk.Frame(info_window)
+        frame.pack(padx=10, pady=10, anchor="w")
+
+        # Loop through the dataframe columns and display key-value pairs in a table format
+        for i, col in enumerate(self.df.columns):
+            # Column name
             tk.Label(
-                info_window,
-                text=f"{col}: {value}",
-                font=("Arial", 12),
-                anchor="w",
-                justify="left",
-                padx=10,
-                pady=5,
-            ).pack(anchor="w")
+                frame, text=f"{col}:", font=("Arial", 12, "bold"), anchor="w"
+            ).grid(row=i, column=0, sticky="w", padx=5, pady=2)
+
+            # Value
+            value = name_row.iloc[0][col]
+            tk.Label(frame, text=value, font=("Arial", 12), anchor="w").grid(
+                row=i, column=1, sticky="w", padx=5, pady=2
+            )
 
     # Util
 
