@@ -39,6 +39,10 @@ class GameInterface:
     # UI Setup
 
     def create_root_and_frame(self) -> None:
+        """
+        Creates tkinter root and frame
+        """
+
         self.root = tk.Tk()
         self.root.geometry(f"{self.width}x{self.height}")
         self.root.title("Microbes Grid")
@@ -47,7 +51,9 @@ class GameInterface:
         self.frame.pack(padx=40, pady=40)
 
     def get_labels_cells_and_game_cells(self) -> None:
-        # Set up gamefield
+        """
+        Creates full game field in grid form: restart button, col-row labels, 9 guess button, info centre button
+        """
 
         # Add restart button
         restart_button = tk.Button(
@@ -128,6 +134,11 @@ class GameInterface:
     def reset_ui(
         self, cols: list, rows: list, game_fields: list, intersections: list
     ) -> None:
+        """
+        Resets ui and variables
+        Generates a new game
+        """
+
         for widget in self.frame.winfo_children():
             widget.destroy()
 
@@ -141,6 +152,10 @@ class GameInterface:
     def create_toplevel_window(
         self, width: int, height: int, title: str
     ) -> tk.Toplevel:
+        """
+        Creates top level window to put search box on it
+        """
+
         toplevel_window = tk.Toplevel(self.root)
         toplevel_window.title(title)
 
@@ -155,6 +170,10 @@ class GameInterface:
         return toplevel_window
 
     def create_combobox(self) -> dict:
+        """
+        Creates combobox (search bar + drop-down ) for search
+        """
+
         # Create a new top-level window for the Combobox
         combobox_window = self.create_toplevel_window(300, 60, "Select Species")
 
@@ -171,6 +190,10 @@ class GameInterface:
     def bind_enter_event_function(
         self, combobox: AutocompleteCombobox, func: Callable
     ) -> None:
+        """
+        Binds functions for input events (click and Enter)
+        """
+
         combobox.bind("<<ComboboxSelected>>", func)
         combobox.bind("<Return>", func)
 
