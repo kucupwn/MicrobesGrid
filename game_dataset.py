@@ -31,7 +31,7 @@ class GameDataset:
 
     def get_species_name_list(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Automate name extract
+        Automated name extract
         Returns all names as list (eg. 'Vibrio cholerae')
         """
 
@@ -41,7 +41,7 @@ class GameDataset:
         """
         Args: col is column's name, prop is pandas series (column name with value, and size (count))
         Creates names list
-        Returns tuple, [0]: 'column_name: *linebreak* property_value', [1]: list of names with common property values
+        Returns a tuple, [0]: 'column_name: *linebreak* property_value', [1]: list of names with common property values
         """
 
         # Get filtered df
