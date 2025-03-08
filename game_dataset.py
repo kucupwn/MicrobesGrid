@@ -45,12 +45,12 @@ class GameDataset:
         """
 
         # Get filtered df
-        prop_df = self.df[self.df[col] == prop[0]]
+        prop_df = self.df[self.df[col] == prop.iloc[0]]
         # Extract Genus Species name as list
         prop_list = self.get_species_name_list(prop_df)
         # Create (Label str, list) tuple
         # Add line break (\n) for better display
-        prop_result = (f"{col}:\n{prop[0]}", prop_list)
+        prop_result = (f"{col}:\n{prop.iloc[0]}", prop_list)
 
         return prop_result
 
