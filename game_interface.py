@@ -7,6 +7,26 @@ UNKNOWN = "???"
 INFO = "Info Centre"
 
 
+class CustomAutocompleteCombobox(AutocompleteCombobox):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.bind(
+            "<KeyRelease>", self.on_key_release
+        )  # Custom handling of key releases
+
+    def on_key_release(self, event):
+        """Prevent automatic selection of the first match"""
+        if event.keysym in [
+            "Return",
+            "Tab",
+        ]:  # Only accept selection when Enter or Tab is pressed
+            self.event_generate("<<ComboboxSelected>>")
+        else:
+            # Just show suggestions without auto-selecting
+            self["values"] = self.autocomplete_list
+            self.selection_clear()
+
+
 class GameInterface:
     def __init__(
         self,
