@@ -13,8 +13,8 @@ SKIP_COLUMNS = ["Domain", "Genus", "Species"]
 
 
 class GameDataset:
-    def __init__(self, dataset: str) -> None:
-        self.df = pd.read_excel(dataset)
+    def __init__(self, dataset: pd.DataFrame) -> None:
+        self.df = dataset
         self.columns = list(self.df.columns)
         self.all_species = ()
         self.properties = []

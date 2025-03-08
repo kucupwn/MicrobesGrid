@@ -1,6 +1,7 @@
 import random
 from game_interface import GameInterface
 from game_dataset import GameDataset
+from utils import DATASET
 
 
 class MicrobesGrid:
@@ -36,7 +37,7 @@ class MicrobesGrid:
         Properties is a list of tuples: [0] is the property definition, [1] is the list of names
         """
 
-        self.dataset = GameDataset("microbes.xlsx")
+        self.dataset = GameDataset(DATASET)
         self.dataset.get_all_species()
         self.dataset.get_properties()
 
