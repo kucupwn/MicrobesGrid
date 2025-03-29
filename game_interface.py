@@ -3,9 +3,6 @@ from ttkwidgets.autocomplete import AutocompleteCombobox
 import pandas as pd
 from typing import Callable
 
-UNKNOWN = "???"
-INFO = "Info Centre"
-
 
 class GameInterface:
     def __init__(
@@ -29,6 +26,8 @@ class GameInterface:
         self.all_species = all_species
         self.restart_callback = restart_callback
         self.df = df
+        self.text_unknown = '???'
+        self.text_info_centre = 'Info Centre'
         self.label_font = ("Arial", 18)
         self.button_font = ("Arial", 14, "italic")
         self.attempts = 0
@@ -102,7 +101,7 @@ class GameInterface:
             for col_index in range(len(self.col_props)):
                 button = tk.Button(
                     self.frame,
-                    text=UNKNOWN,
+                    text=self.text_unknown,
                     width=20,
                     height=2,
                     justify="center",
@@ -120,7 +119,7 @@ class GameInterface:
 
         info_button = tk.Button(
             self.frame,
-            text=INFO,
+            text=self.text_info_centre,
             width=10,
             justify="center",
             font=self.button_font,
@@ -210,7 +209,7 @@ class GameInterface:
             button_text = button.cget("text")
 
             # Disable clicking after successful guess
-            if button_text != UNKNOWN:
+            if button_text != self.text_unknown:
                 return
 
         combobox = self.create_combobox()
@@ -240,8 +239,8 @@ class GameInterface:
         """
 
         for button in self.game_fields:
-            # Not win if there's still UNKNOWN
-            if button.cget("text") == UNKNOWN:
+            # Not win if there's still unknown
+            if button.cget("text") == self.text_unknown:
                 return False
 
         return True

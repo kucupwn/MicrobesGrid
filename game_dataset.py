@@ -1,16 +1,5 @@
 import pandas as pd
 
-SPHERE_SHAPE = [
-    "Coccobacillus",
-    "Diplococcus",
-    "Staphylococcus",
-    "Streptococcus",
-    "Tetrad",
-]
-SPIRAL_SHAPE = ["Spiral", "Spirillum"]
-OTHER_SHAPE = ["Filamentous", "Pleomorphic", "Vibrio"]
-SKIP_COLUMNS = ["Domain", "Genus", "Species"]
-
 
 class GameDataset:
     def __init__(self, dataset: pd.DataFrame) -> None:
@@ -19,6 +8,10 @@ class GameDataset:
         self.all_species = ()
         self.properties = []
         self.all_species = self.get_all_species()
+        self.sphere_shape = ["Coccobacillus","Diplococcus","Staphylococcus","Streptococcus","Tetrad",]
+        self.spiral_shape = ["Spiral", "Spirillum"]
+        self.other_shape = ["Filamentous", "Pleomorphic", "Vibrio"]
+        self.skip_columns = ["Domain", "Genus", "Species"]
 
     def get_all_species(self) -> list:
         # Get all species for search list
@@ -62,7 +55,7 @@ class GameDataset:
 
         for col in self.columns:
             # Skip some column
-            if col in SKIP_COLUMNS:
+            if col in self.skip_columns:
                 continue
 
             # Custom functions for exception
@@ -97,12 +90,12 @@ class GameDataset:
         rod_shape = ("Shape:\nRod", rod_shape_list)
         self.properties.append(rod_shape)
 
-        sphere_shape_df = self.df[self.df["Shape"].isin(SPHERE_SHAPE)]
+        sphere_shape_df = self.df[self.df["Shape"].isin(self.sphere_shape)]
         sphere_shape_list = self.get_species_name_list(sphere_shape_df)
         sphere_shape = ("Shape:\nSphere", sphere_shape_list)
         self.properties.append(sphere_shape)
 
-        other_shape_df = self.df[self.df["Shape"].isin(OTHER_SHAPE)]
+        other_shape_df = self.df[self.df["Shape"].isin(self.other_shape)]
         other_shape_list = self.get_species_name_list(other_shape_df)
         other_shape = ("Shape:\nNOT Rod or Sphere", other_shape_list)
         self.properties.append(other_shape)
