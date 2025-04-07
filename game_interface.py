@@ -129,6 +129,9 @@ class GameInterface:
             command=self.input_combobox_events,
         )
         info_button.grid(row=4, column=0, padx=10, pady=10)
+        
+        self.attempt_label = tk.Label(self.frame, text=f'Attempts: {self.attempts}', font=("Arial", 18, "italic"))
+        self.attempt_label.grid(row=4, column=3, padx=10, pady=10)
 
     def reset_ui(
         self, cols: list, rows: list, game_fields: list, intersections: list
@@ -142,6 +145,7 @@ class GameInterface:
             widget.destroy()
 
         # Generate new random game in main file
+        self.attempts = 0
         self.col_props = cols
         self.row_props = rows
         self.game_fields = game_fields
@@ -300,6 +304,7 @@ class GameInterface:
 
         # Count attempts
         self.attempts += 1
+        self.attempt_label.config(text=f'Attempts: {self.attempts}')
 
         # Calculate the button's row and column index
         button_index = self.game_fields.index(button)
