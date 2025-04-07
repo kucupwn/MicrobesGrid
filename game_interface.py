@@ -130,7 +130,7 @@ class GameInterface:
         )
         info_button.grid(row=4, column=0, padx=10, pady=10)
         
-        self.attempt_label = tk.Label(self.frame, text=f'Attempts: {self.attempts}', font=("Arial", 18, "italic"))
+        self.attempt_label = tk.Label(self.frame, text=f'Attempts: {self.attempts}', font=self.button_font)
         self.attempt_label.grid(row=4, column=3, padx=10, pady=10)
 
     def reset_ui(
