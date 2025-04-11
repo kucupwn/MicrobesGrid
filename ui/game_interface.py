@@ -205,9 +205,7 @@ class GameInterface:
         self.attempt_label.config(text=f'Attempts: {self.game.attempts}')
 
         # Calculate the button's row and column index
-        button_index = self.game.game_fields.index(button)
-        row_index = button_index // len(self.game.cols)
-        col_index = button_index % len(self.game.cols)
+        row_index, col_index = self.game.get_gamefield_position(button)
 
         # Get the intersection related to this row and column combination
         intersection = self.game.intersections[row_index][col_index]

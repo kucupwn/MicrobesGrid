@@ -1,4 +1,5 @@
 import random
+import tkinter as tk
 from ui.game_interface import GameInterface
 from data.game_dataset import GameDataset
 from data.data_utils import DATASET
@@ -28,6 +29,7 @@ class MicrobesGrid:
         self.dataset = GameDataset(DATASET)
         self.dataset.get_all_species()
         self.dataset.get_properties()
+
 
     def generate_game(self) -> None:
         """
@@ -71,7 +73,16 @@ class MicrobesGrid:
                     rows.append(prop)
                     self.intersections.append([common_1, common_2, common_3])
                     
-    
+                    
+    def get_gamefield_position(self, button: tk.Button) -> tuple:
+        cols_count = len(self.cols)
+        button_index = self.game_fields.index(button)
+        row_index = button_index // cols_count
+        col_index = button_index % cols_count
+        
+        return (row_index, col_index)
+                    
+                    
     def is_existing_value(self, value: str) -> bool:
         """
         Checks if a name is already used
@@ -101,6 +112,7 @@ class MicrobesGrid:
 
         return True
     
+    
     def restart_game(self) -> None:
         """
         Empty all lists for new generation
@@ -115,7 +127,6 @@ class MicrobesGrid:
         self.generate_game()
     
     
-
 
 game = MicrobesGrid()
 ui = GameInterface(game)
