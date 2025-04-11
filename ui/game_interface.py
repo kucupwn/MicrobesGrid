@@ -207,11 +207,11 @@ class GameInterface:
         # Calculate the button's row and column index
         row_index, col_index = self.game.get_gamefield_position(button)
 
-        # Get the intersection related to this row and column combination
-        intersection = self.game.intersections[row_index][col_index]
+        # Get the intersections related to this row and column combination
+        intersections = self.game.intersections[row_index][col_index]
 
-        # Check if the selected value exists in the intersection for this position
-        if selected_value not in intersection or self.game.is_existing_value(selected_value):
+        # Check if the selected value exists in the intersections for this position
+        if selected_value not in intersections or self.game.is_existing_value(selected_value):
             # Change background to red
             button.config(bg="red")
             # 1 sec later background change to default

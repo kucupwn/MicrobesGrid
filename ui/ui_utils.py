@@ -1,7 +1,7 @@
 import tkinter as tk
 from typing import Callable
 
-def get_restart_button(frame: tk.Frame, font: tuple, command: Callable):
+def get_restart_button(frame: tk.Frame, font: tuple, command: Callable) -> tk.Button:
     restart_button = tk.Button(
         frame,
         text="Restart",
@@ -17,7 +17,7 @@ def get_restart_button(frame: tk.Frame, font: tuple, command: Callable):
     
     return restart_button
 
-def get_label(frame: tk.Frame, font: tuple, prop: list):
+def get_label(frame: tk.Frame, font: tuple, prop: list) -> tk.Label:
     label = tk.Label(
         frame,
         text=prop[0],
@@ -31,7 +31,7 @@ def get_label(frame: tk.Frame, font: tuple, prop: list):
     
     return label
 
-def get_gamefield_button(self, frame: tk.Frame, font: tuple, text: str, cols_count: int, col_index: int, row_index: int):
+def get_gamefield_button(self, frame: tk.Frame, font: tuple, text: str, cols_count: int, col_index: int, row_index: int) -> tk.Button:
     gamefield_button = tk.Button(
         frame,
         text=text,
@@ -52,7 +52,7 @@ def get_gamefield_button(self, frame: tk.Frame, font: tuple, text: str, cols_cou
     
     return gamefield_button
 
-def get_info_button(frame: tk.Frame, font: tuple, command: Callable, text: str):
+def get_info_button(frame: tk.Frame, font: tuple, command: Callable, text: str) -> tk.Button:
     info_button = tk.Button(
         frame,
         text=text,
@@ -67,7 +67,7 @@ def get_info_button(frame: tk.Frame, font: tuple, command: Callable, text: str):
     
     return info_button
 
-def center_window(window: tk.Toplevel, width: int, height: int):
+def center_window(window: tk.Toplevel, width: int, height: int) -> tuple:
         """
         Function for positioning top level windows to middle on x and y
         """
