@@ -31,8 +31,8 @@ def get_label(frame: tk.Frame, font: tuple, prop: list):
     
     return label
 
-def get_button(self, frame: tk.Frame, font: tuple, text: str, cols_count: int, col_index: int, row_index: int):
-    button = tk.Button(
+def get_gamefield_button(self, frame: tk.Frame, font: tuple, text: str, cols_count: int, col_index: int, row_index: int):
+    gamefield_button = tk.Button(
         frame,
         text=text,
         width=20,
@@ -48,6 +48,21 @@ def get_button(self, frame: tk.Frame, font: tuple, text: str, cols_count: int, c
         ): self.input_combobox_events(self.game.game_fields[b]),
     )
     
-    self.game.game_fields.append(button)
+    self.game.game_fields.append(gamefield_button)
     
-    return button
+    return gamefield_button
+
+def get_info_button(frame: tk.Frame, font: tuple, command: Callable, text: str):
+    info_button = tk.Button(
+        frame,
+        text=text,
+        width=10,
+        justify="center",
+        font=font,
+        bg="lightgray",
+        relief="groove",
+        bd=2,
+        command=command,
+    )
+    
+    return info_button
