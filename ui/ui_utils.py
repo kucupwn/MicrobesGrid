@@ -66,3 +66,15 @@ def get_info_button(frame: tk.Frame, font: tuple, command: Callable, text: str):
     )
     
     return info_button
+
+def center_window(window: tk.Toplevel, width: int, height: int):
+        """
+        Function for positioning top level windows to middle on x and y
+        """
+
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+        position_top = int(screen_height / 2 - height / 2)
+        position_left = int(screen_width / 2 - width / 2)
+
+        return (position_left, position_top)

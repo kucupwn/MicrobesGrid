@@ -1,7 +1,7 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 from typing import Callable
-from .ui_utils import get_restart_button, get_label, get_gamefield_button, get_info_button
+from .ui_utils import get_restart_button, get_label, get_gamefield_button, get_info_button, center_window
 
 
 class GameInterface:
@@ -88,7 +88,7 @@ class GameInterface:
         toplevel_window.title(title)
 
         # Calculate position
-        position_left, position_top = self.window_placement_middle(
+        position_left, position_top = center_window(
             toplevel_window, width, height
         )
 
@@ -267,18 +267,3 @@ class GameInterface:
             tk.Label(frame, text=value, font=("Arial", 12), anchor="w").grid(
                 row=i, column=1, sticky="w", padx=5, pady=2
             )
-
-    # Util
-
-    @staticmethod
-    def window_placement_middle(window: tk.Toplevel, width: int, height: int):
-        """
-        Function for positioning top level windows to middle on x and y
-        """
-
-        screen_width = window.winfo_screenwidth()
-        screen_height = window.winfo_screenheight()
-        position_top = int(screen_height / 2 - height / 2)
-        position_left = int(screen_width / 2 - width / 2)
-
-        return (position_left, position_top)
