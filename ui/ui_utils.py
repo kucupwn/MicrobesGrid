@@ -1,7 +1,7 @@
 import tkinter as tk
 from typing import Callable
 
-def get_restart_button(self, frame: tk.Frame, font: tuple, command: callable):
+def get_restart_button(frame: tk.Frame, font: tuple, command: Callable):
     restart_button = tk.Button(
         frame,
         text="Restart",
@@ -17,7 +17,7 @@ def get_restart_button(self, frame: tk.Frame, font: tuple, command: callable):
     
     return restart_button
 
-def get_label(self, frame, font, prop):
+def get_label(frame: tk.Frame, font: tuple, prop: list):
     label = tk.Label(
         frame,
         text=prop[0],
@@ -30,3 +30,24 @@ def get_label(self, frame, font, prop):
     )
     
     return label
+
+def get_button(self, frame: tk.Frame, font: tuple, text: str, cols_count: int, col_index: int, row_index: int):
+    button = tk.Button(
+        frame,
+        text=text,
+        width=20,
+        height=2,
+        justify="center",
+        font=font,
+        bg="lightgray",
+        relief="groove",
+        bd=2,
+        pady=20,
+        command=lambda b=col_index + (
+            row_index * cols_count
+        ): self.input_combobox_events(self.game.game_fields[b]),
+    )
+    
+    self.game.game_fields.append(button)
+    
+    return button

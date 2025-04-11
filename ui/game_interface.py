@@ -1,7 +1,7 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 from typing import Callable
-from ui_utils import get_restart_button, get_label
+from .ui_utils import get_restart_button, get_label, get_button
 
 
 class GameInterface:
@@ -45,31 +45,20 @@ class GameInterface:
         for col_index, col_prop in enumerate(self.game.cols):
             label = get_label(self.frame, self.label_font, col_prop)
             label.grid(row=0, column=col_index + 1, padx=10, pady=10)
+            
 
+        cols_count = len(self.game.cols)
+        
         # Add row property labels and the clickable grid
         for row_index, row_prop in enumerate(self.game.rows):
             label = get_label(self.frame, self.label_font, row_prop)
             label.grid(row=row_index + 1, column=0, padx=10, pady=10)
 
             # Grid cells
-            for col_index in range(len(self.game.cols)):
-                button = tk.Button(
-                    self.frame,
-                    text=self.text_unknown,
-                    width=20,
-                    height=2,
-                    justify="center",
-                    font=self.button_font,
-                    bg="lightgray",
-                    relief="groove",
-                    bd=2,
-                    pady=20,
-                    command=lambda b=col_index + (
-                        row_index * len(self.game.cols)
-                    ): self.input_combobox_events(self.game.game_fields[b]),
-                )
+            for col_index in range(cols_count):
+                button = get_button(self, self.frame, self.button_font, self.text_unknown, cols_count, col_index, row_index)
                 button.grid(row=row_index + 1, column=col_index + 1, padx=10, pady=10)
-                self.game.game_fields.append(button)
+                
 
         info_button = tk.Button(
             self.frame,
