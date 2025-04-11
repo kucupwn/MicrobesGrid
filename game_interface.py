@@ -321,7 +321,8 @@ class GameInterface:
 
     # Util
 
-    def window_placement_middle(self, window: tk.Toplevel, width: int, height: int):
+    @staticmethod
+    def window_placement_middle(window: tk.Toplevel, width: int, height: int):
         """
         Function for positioning top level windows to middle on x and y
         """

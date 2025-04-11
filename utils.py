@@ -2,7 +2,6 @@ import os
 import sys
 import pandas as pd
 
-
 def get_xlsx_file():
     if getattr(sys, "frozen", False):
         # Running as a bundled .exe
