@@ -1,7 +1,7 @@
 import random
-from game_interface import GameInterface
-from game_dataset import GameDataset
-from utils import DATASET
+from ui.game_interface import GameInterface
+from data.game_dataset import GameDataset
+from data.data_util import DATASET
 
 
 class MicrobesGrid:
