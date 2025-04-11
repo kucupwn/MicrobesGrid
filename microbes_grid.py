@@ -8,27 +8,15 @@ class MicrobesGrid:
     def __init__(self) -> None:
         self.width = 1280
         self.height = 760
-        self.running = True
         self.cols = []
         self.rows = []
         self.game_fields = []
         self.intersections = []
+        self.attempts = 0
 
         self.init_dataset()
-        self.get_random_rows_and_cols()
+        self.generate_game()
 
-        self.interface = GameInterface(
-            self.width,
-            self.height,
-            self.cols,
-            self.rows,
-            self.game_fields,
-            self.intersections,
-            self.dataset.all_species,
-            self.restart_game,
-            self.dataset.df,
-        )
-        self.game_fields = self.interface.game_fields
 
     def init_dataset(self) -> None:
         """
@@ -41,7 +29,7 @@ class MicrobesGrid:
         self.dataset.get_all_species()
         self.dataset.get_properties()
 
-    def get_random_rows_and_cols(self) -> None:
+    def generate_game(self) -> None:
         """
         Sets up the game's main logic
         Randomly get 3 properties (y values)
@@ -82,7 +70,37 @@ class MicrobesGrid:
                 if len(common_1) >= 3 and len(common_2) >= 3 and len(common_3) >= 3:
                     rows.append(prop)
                     self.intersections.append([common_1, common_2, common_3])
+                    
+    
+    def is_existing_value(self, value: str) -> bool:
+        """
+        Checks if a name is already used
+        Returns bool
+        """
 
+        for button in self.game_fields:
+            # Transform previous answers line break back to space for comparison
+            button_text = button.cget("text").replace("\n", " ")
+            # True if answer is already used
+            if button_text == value:
+                return True
+
+        return False
+    
+    
+    def check_win(self, text_unknown) -> bool:
+        """
+        Checks if all cells are answered correctly
+        Returns bool
+        """
+
+        for button in self.game_fields:
+            # Not win if there's still unknown
+            if button.cget("text") == text_unknown:
+                return False
+
+        return True
+    
     def restart_game(self) -> None:
         """
         Empty all lists for new generation
@@ -93,15 +111,12 @@ class MicrobesGrid:
         self.rows = []
         self.game_fields = []
         self.intersections = []
-        self.get_random_rows_and_cols()
-        self.interface.reset_ui(
-            self.cols, self.rows, self.game_fields, self.intersections
-        )
-
-    def main_loop(self) -> None:
-        if self.running:
-            self.interface.root.mainloop()
+        self.attempts = 0
+        self.generate_game()
+    
+    
 
 
 game = MicrobesGrid()
-game.main_loop()
+ui = GameInterface(game)
+ui.main_loop()
