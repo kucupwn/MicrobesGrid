@@ -1,6 +1,7 @@
 import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 from typing import Callable
+from ui_utils import get_restart_button, get_label
 
 
 class GameInterface:
@@ -37,46 +38,17 @@ class GameInterface:
         """
 
         # Add restart button
-        restart_button = tk.Button(
-            self.frame,
-            text="Restart",
-            width=10,
-            justify="center",
-            font=self.label_font,
-            bg="red",
-            fg="white",
-            relief="groove",
-            bd=2,
-            command=self.reset_ui,
-        )
+        restart_button = get_restart_button(self.frame, self.label_font, self.reset_ui)
         restart_button.grid(row=0, column=0, padx=10, pady=10)
 
         # Add column property labels
         for col_index, col_prop in enumerate(self.game.cols):
-            label = tk.Label(
-                self.frame,
-                text=col_prop[0],
-                width=16,
-                height=4,
-                bg="lightblue",
-                font=self.label_font,
-                relief="ridge",
-                bd=3,
-            )
+            label = get_label(self.frame, self.label_font, col_prop)
             label.grid(row=0, column=col_index + 1, padx=10, pady=10)
 
         # Add row property labels and the clickable grid
         for row_index, row_prop in enumerate(self.game.rows):
-            label = tk.Label(
-                self.frame,
-                text=row_prop[0],
-                width=16,
-                height=4,
-                bg="lightblue",
-                font=self.label_font,
-                relief="ridge",
-                bd=3,
-            )
+            label = get_label(self.frame, self.label_font, row_prop)
             label.grid(row=row_index + 1, column=0, padx=10, pady=10)
 
             # Grid cells
