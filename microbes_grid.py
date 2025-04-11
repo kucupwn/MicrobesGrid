@@ -75,6 +75,10 @@ class MicrobesGrid:
                     
                     
     def get_gamefield_position(self, button: tk.Button) -> tuple:
+        '''
+        Returns clicked button position in 3x3 grid
+        '''
+
         cols_count = len(self.cols)
         button_index = self.game_fields.index(button)
         row_index = button_index // cols_count
