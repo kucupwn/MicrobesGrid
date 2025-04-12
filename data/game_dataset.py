@@ -83,57 +83,36 @@ class GameDataset:
                     self.properties.append(prop_result)
 
     # Special property values
+    def get_special_property(self, df: pd.DataFrame, prop_text: str):
+        prop_list = self.get_species_name_list(df)
+        result = (prop_text, prop_list)
+        self.properties.append(result)
 
     def get_shape_property(self) -> None:
         rod_shape_df = self.df[self.df["Shape"] == "Rod"]
-        rod_shape_list = self.get_species_name_list(rod_shape_df)
-        rod_shape = ("Shape:\nRod", rod_shape_list)
-        self.properties.append(rod_shape)
+        self.get_special_property(rod_shape_df, "Shape:\nRod")
 
         sphere_shape_df = self.df[self.df["Shape"].isin(self.sphere_shape)]
-        sphere_shape_list = self.get_species_name_list(sphere_shape_df)
-        sphere_shape = ("Shape:\nSphere", sphere_shape_list)
-        self.properties.append(sphere_shape)
+        self.get_special_property(sphere_shape_df, "Shape:\nSphere")
 
         other_shape_df = self.df[self.df["Shape"].isin(self.other_shape)]
-        other_shape_list = self.get_species_name_list(other_shape_df)
-        other_shape = ("Shape:\nNOT Rod or Sphere", other_shape_list)
-        self.properties.append(other_shape)
+        self.get_special_property(other_shape_df, "Shape:\nNOT Rod or Sphere")
 
     def get_gc_content_property(self) -> None:
         less_than_40_gc_content_df = self.df[self.df["GC Content"] < 40]
-        less_than_40_gc_content_list = self.get_species_name_list(
-            less_than_40_gc_content_df
-        )
-        less_than_40_gc_content = ("GC content\n< 40%", less_than_40_gc_content_list)
-        self.properties.append(less_than_40_gc_content)
+        self.get_special_property(less_than_40_gc_content_df, "GC content\n< 40%")
 
         between_40_60_gc_content_df = self.df[
             (self.df["GC Content"] >= 40) & (self.df["GC Content"] <= 60)
         ]
-        between_40_60_gc_content_list = self.get_species_name_list(
-            between_40_60_gc_content_df
-        )
-        between_40_60_gc_content = (
-            "GC content:\n40-60%",
-            between_40_60_gc_content_list,
-        )
-        self.properties.append(between_40_60_gc_content)
+        self.get_special_property(between_40_60_gc_content_df, "GC content:\n40-60%")
 
         more_than_60_gc_content_df = self.df[self.df["GC Content"] > 60]
-        more_than_60_gc_content_list = self.get_species_name_list(
-            more_than_60_gc_content_df
-        )
-        more_than_60_gc_content = ("GC content\n> 60%", more_than_60_gc_content_list)
-        self.properties.append(more_than_60_gc_content)
+        self.get_special_property(more_than_60_gc_content_df, "GC content\n> 60%")
 
     def get_pigment_property(self) -> None:
         not_pigmented_df = self.df[self.df["Pigment Production"] == "No"]
-        not_pigmented_list = self.get_species_name_list(not_pigmented_df)
-        not_pigmented = ("Pigment Production:\nNo", not_pigmented_list)
-        self.properties.append(not_pigmented)
+        self.get_special_property(not_pigmented_df, "Pigment Production:\nNo")
 
         pigmented_df = self.df[self.df["Pigment Production"] != "No"]
-        pigmented_list = self.get_species_name_list(pigmented_df)
-        pigmented = ("Pigment Production:\nYes", pigmented_list)
-        self.properties.append(pigmented)
+        self.get_special_property(pigmented_df, "Pigment Production:\nYes")
