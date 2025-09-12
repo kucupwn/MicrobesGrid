@@ -12,3 +12,8 @@ An Info Centre is included to browse microbes and their traits (lookup is by mic
 - pandas
 
 - openpyxl
+
+
+## Release
+
+Get the latest version from [HERE](https://github.com/kucupwn/MicrobesGrid/releases/tag/v1.0.0).
