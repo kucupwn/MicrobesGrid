@@ -2,3 +2,4 @@ build/
 dist/
 venv/
 /microbes_grid.spec
+__pycache__/
